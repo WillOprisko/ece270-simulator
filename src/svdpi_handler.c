@@ -1,5 +1,8 @@
+// DPI Interface
 #include "svdpi.h"
 #include "veriuser.h"
+
+// String + constant + data type includes
 #include <string.h>
 #include <stdio.h> 
 #include <errno.h>
@@ -7,6 +10,10 @@
 #include <unistd.h> 
 #include <sys/types.h> 
 #include <sys/wait.h> 
+
+// For timer
+#include <time.h>
+#include <math.h>
 
 extern void svdpi_read(int, int);    // Imported from SystemVerilog
 // extern void svdpi_write(void);    // Imported from SystemVerilog
@@ -45,6 +52,8 @@ static int red;
 static int green;
 static int blue;
 
+static time_t start_time;
+
 static int init_pipes()
 {
   char *w;
@@ -75,6 +84,7 @@ void svdpi_setup (void)
     if (init_pipes() == 1)
       exit (0);
     get_input();
+    start_time = time (NULL);
 }
 
 /******************************************************************************/
@@ -115,6 +125,19 @@ void get_input (void)
         for (int i = 19; i >= 0; i--)
             input [i] = newinput [19 - i];
     }
+}
+
+void timer_watch (void)
+{
+  time_t now;
+        now = time (NULL);
+        if (now - start_time > 600)
+        {
+          char buffer [100];
+          snprintf (buffer, 100, "\nTime limit of 10 minutes exceeded! Stopping simulation.\n");
+          write(wpipe, buffer, strlen(buffer) + 1);
+          exit(1);
+        }
 }
 
 void out_write (const int p_ss7,  const int p_ss6,   const int p_ss5, const int p_ss4,

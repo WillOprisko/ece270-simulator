@@ -1,0 +1,96 @@
+$date
+	Wed Jul 10 00:29:06 2019
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module lab08_tb $end
+$var wire 8 ! right [7:0] $end
+$var wire 8 " left [7:0] $end
+$var reg 21 # pb [20:0] $end
+$scope module t1 $end
+$var wire 1 $ blue $end
+$var wire 1 % green $end
+$var wire 1 & hz100 $end
+$var wire 8 ' left [7:0] $end
+$var wire 21 ( pb [20:0] $end
+$var wire 1 ) red $end
+$var wire 8 * right [7:0] $end
+$var wire 8 + ss0 [7:0] $end
+$var wire 8 , ss1 [7:0] $end
+$var wire 8 - ss2 [7:0] $end
+$var wire 8 . ss3 [7:0] $end
+$var wire 8 / ss4 [7:0] $end
+$var wire 8 0 ss5 [7:0] $end
+$var wire 8 1 ss6 [7:0] $end
+$var wire 8 2 ss7 [7:0] $end
+$var reg 8 3 state [7:0] $end
+$var reg 8 4 tog [7:0] $end
+$upscope $end
+$scope task check_output $end
+$var reg 1 5 expected $end
+$var reg 1 6 value $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+06
+05
+b0 4
+bx 3
+bz 2
+bz 1
+bz 0
+bz /
+bz .
+bz -
+bz ,
+bz +
+bx *
+z)
+b0 (
+b0 '
+z&
+z%
+z$
+b0 #
+b0 "
+bx !
+$end
+#10
+x6
+#20
+06
+b0 #
+b0 (
+#30
+x6
+#40
+06
+b0 #
+b0 (
+#50
+x6
+#60
+06
+b0 #
+b0 (
+#70
+x6
+#80
+06
+b0 #
+b0 (
+#90
+x6
+#100
+06
+b0 #
+b0 (
+#110
+x6
+#120

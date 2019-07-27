@@ -1,0 +1,16 @@
+Outside regex OSS_CVC_7.00b-rhel6x of 07/07/14 (Linux-elf).
+Outside regex Copyright (c) 1991-2014 Tachyon Design Automation Corp.
+Outside regex   All Rights reserved.  Licensed software subject to prohibitions and
+Outside regex   restrictions.  See OSS CVC artistic license included with release.
+Outside regex Today is Sat Jul 27 18:02:07 2019.
+Outside regex Elaborating source file "sim_modules/tb_ice40.sv"
+Outside regex Elaborating source file "tempcode/bdee59fd58e3f75a0e6662c8a0bb1ddb014aab56e93135010b8519b1aa997f92/code.v"
+Outside regex Unresolved modules or udps:
+Outside regex   unknownmodule
+Outside regex 
+Outside regex   1 modules or udps unresolved after library processing - cannot continue.
+Outside regex   Unable to begin simulation.
+Outside regex End of OSS_CVC_7.00b-rhel6x at Sat Jul 27 18:02:07 2019 (elapsed 0.0 seconds).
+Outside regex 
+**tempcode/randomfilereplacement007/code.v(22) [CUSTOM_ERROR] This module does not exist!
+**tempcode/randomfilereplacement007/code.v(23) [CUSTOM_ERROR] This module does not exist!

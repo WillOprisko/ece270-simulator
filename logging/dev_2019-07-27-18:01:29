@@ -1,0 +1,29 @@
+Outside regex OSS_CVC_7.00b-rhel6x of 07/07/14 (Linux-elf).
+Outside regex Copyright (c) 1991-2014 Tachyon Design Automation Corp.
+Outside regex   All Rights reserved.  Licensed software subject to prohibitions and
+Outside regex   restrictions.  See OSS CVC artistic license included with release.
+Outside regex Today is Sat Jul 27 18:01:31 2019.
+Outside regex Elaborating source file "sim_modules/tb_ice40.sv"
+Outside regex Elaborating source file "tempcode/f9bae45ed8c32e1b3bbf4b01a37b835b7c85cb40f611294b19ae717cde8b9b15/code.v"
+Outside regex Unresolved modules or udps:
+Inside regex Unresolved modules or udps:
+**tempcode/randomfilereplacement007/code.v(22) [CUSTOM_ERROR] This module does not exist!
+**tempcode/randomfilereplacement007/code.v(23) [CUSTOM_ERROR] This module does not exist!
+Outside regex   unknownmodule
+Outside regex 
+Outside regex   1 modules or udps unresolved after library processing - cannot continue.
+Outside regex   Unable to begin simulation.
+Outside regex End of OSS_CVC_7.00b-rhel6x at Sat Jul 27 18:01:31 2019 (elapsed 0.0 seconds).
+Outside regex 
+Starting f9bae45ed8c32e1b3bbf4b01a37b835b7c85cb40f611294b19ae717cde8b9b15
+uncaughtException! Details: Error [ERR_STREAM_DESTROYED]: Cannot call write after a stream was destroyed
+    at doWrite (_stream_writable.js:411:19)
+    at writeOrBuffer (_stream_writable.js:399:5)
+    at Socket.Writable.write (_stream_writable.js:299:11)
+    at WebSocket.incoming (/home/menon18/nodejs_cvc/js_cvc_interface.js:249:78)
+    at WebSocket.emit (events.js:198:13)
+    at Receiver.receiverOnMessage (/home/menon18/nodejs_cvc/node_modules/ws/lib/websocket.js:800:20)
+    at Receiver.emit (events.js:198:13)
+    at Receiver.dataMessage (/home/menon18/nodejs_cvc/node_modules/ws/lib/receiver.js:422:14)
+    at Receiver.getData (/home/menon18/nodejs_cvc/node_modules/ws/lib/receiver.js:352:17)
+    at Receiver.startLoop (/home/menon18/nodejs_cvc/node_modules/ws/lib/receiver.js:138:22)

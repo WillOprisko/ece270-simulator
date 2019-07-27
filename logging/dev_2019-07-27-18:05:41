@@ -1,0 +1,132 @@
+Outside regex OSS_CVC_7.00b-rhel6x of 07/07/14 (Linux-elf).
+Outside regex Copyright (c) 1991-2014 Tachyon Design Automation Corp.
+Outside regex   All Rights reserved.  Licensed software subject to prohibitions and
+Outside regex   restrictions.  See OSS CVC artistic license included with release.
+Outside regex Today is Sat Jul 27 18:05:43 2019.
+Outside regex Elaborating source file "sim_modules/tb_ice40.sv"
+Outside regex Elaborating source file "tempcode/7141d3f1678329eca7f35ee0d66272609d7ab0a8decf8181f79b2790ce641b31/code.v"
+Outside regex Unresolved modules or udps:
+Outside regex   unknownmodule
+Outside regex 
+Outside regex   1 modules or udps unresolved after library processing - cannot continue.
+Outside regex   Unable to begin simulation.
+Outside regex End of OSS_CVC_7.00b-rhel6x at Sat Jul 27 18:05:43 2019 (elapsed 0.0 seconds).
+Outside regex 
+**tempcode/randomfilereplacement007/code.v(50) [CUSTOM_ERROR] This module does not exist!
+**tempcode/randomfilereplacement007/code.v(51) [CUSTOM_ERROR] This module does not exist!
+Outside regex OSS_CVC_7.00b-rhel6x of 07/07/14 (Linux-elf).
+Outside regex Copyright (c) 1991-2014 Tachyon Design Automation Corp.
+Outside regex   All Rights reserved.  Licensed software subject to prohibitions and
+Outside regex   restrictions.  See OSS CVC artistic license included with release.
+Outside regex Today is Sat Jul 27 18:05:47 2019.
+Outside regex Elaborating source file "sim_modules/tb_ice40.sv"
+Outside regex Elaborating source file "tempcode/b1fe8ce619b67ed742a4d624a0174339009dc86525fcf298e72899f6ef3884ae/code.v"
+Outside regex Unresolved modules or udps:
+Outside regex   unknownmodule
+Outside regex 
+Outside regex   1 modules or udps unresolved after library processing - cannot continue.
+Outside regex   Unable to begin simulation.
+Outside regex End of OSS_CVC_7.00b-rhel6x at Sat Jul 27 18:05:47 2019 (elapsed 0.0 seconds).
+Outside regex 
+**tempcode/randomfilereplacement007/code.v(50) [CUSTOM_ERROR] This module does not exist!
+**tempcode/randomfilereplacement007/code.v(51) [CUSTOM_ERROR] This module does not exist!
+Outside regex OSS_CVC_7.00b-rhel6x of 07/07/14 (Linux-elf).
+Outside regex Copyright (c) 1991-2014 Tachyon Design Automation Corp.
+Outside regex   All Rights reserved.  Licensed software subject to prohibitions and
+Outside regex   restrictions.  See OSS CVC artistic license included with release.
+Outside regex Today is Sat Jul 27 18:05:52 2019.
+Outside regex Elaborating source file "sim_modules/tb_ice40.sv"
+Outside regex Elaborating source file "tempcode/b8cc0bf0656352cd2b24e653d10990e86182d0d883c6bf5f681249b6edd1fb4e/code.v"
+Outside regex **tempcode/b8cc0bf0656352cd2b24e653d10990e86182d0d883c6bf5f681249b6edd1fb4e/code.v(55) ERROR** [1005] wire declaration comma separator or semicolon expected - wire read
+Outside regex Unresolved modules or udps:
+Outside regex   unknownmodule
+Outside regex 
+Outside regex   1 modules or udps unresolved after library processing - cannot continue.
+Outside regex   Unable to begin simulation.
+Outside regex End of OSS_CVC_7.00b-rhel6x at Sat Jul 27 18:05:52 2019 (elapsed 0.0 seconds).
+Outside regex 
+**tempcode/b8cc0bf0656352cd2b24e653d10990e86182d0d883c6bf5f681249b6edd1fb4e/code.v(55) ERROR** [1005] wire declaration comma separator or semicolon expected - wire read
+**tempcode/randomfilereplacement007/code.v(50) [CUSTOM_ERROR] This module does not exist!
+**tempcode/randomfilereplacement007/code.v(51) [CUSTOM_ERROR] This module does not exist!
+Outside regex OSS_CVC_7.00b-rhel6x of 07/07/14 (Linux-elf).
+Outside regex Copyright (c) 1991-2014 Tachyon Design Automation Corp.
+Outside regex   All Rights reserved.  Licensed software subject to prohibitions and
+Outside regex   restrictions.  See OSS CVC artistic license included with release.
+Outside regex Today is Sat Jul 27 18:05:59 2019.
+Outside regex Elaborating source file "sim_modules/tb_ice40.sv"
+Outside regex Elaborating source file "tempcode/962afff68e5289c68614c5a0c83e52c493dffe39099d96dbadd8c91912c338d9/code.v"
+Outside regex **tempcode/962afff68e5289c68614c5a0c83e52c493dffe39099d96dbadd8c91912c338d9/code.v(54) ERROR** [991] module type, gate or udp name expected - { read
+Outside regex Unresolved modules or udps:
+Outside regex   unknownmodule
+Outside regex 
+Outside regex   1 modules or udps unresolved after library processing - cannot continue.
+Outside regex   Unable to begin simulation.
+Outside regex End of OSS_CVC_7.00b-rhel6x at Sat Jul 27 18:05:59 2019 (elapsed 0.0 seconds).
+Outside regex 
+**tempcode/962afff68e5289c68614c5a0c83e52c493dffe39099d96dbadd8c91912c338d9/code.v(54) ERROR** [991] module type, gate or udp name expected - { read
+**tempcode/randomfilereplacement007/code.v(50) [CUSTOM_ERROR] This module does not exist!
+**tempcode/randomfilereplacement007/code.v(51) [CUSTOM_ERROR] This module does not exist!
+Outside regex OSS_CVC_7.00b-rhel6x of 07/07/14 (Linux-elf).
+Outside regex Copyright (c) 1991-2014 Tachyon Design Automation Corp.
+Outside regex   All Rights reserved.  Licensed software subject to prohibitions and
+Outside regex   restrictions.  See OSS CVC artistic license included with release.
+Outside regex Today is Sat Jul 27 18:06:02 2019.
+Outside regex Elaborating source file "sim_modules/tb_ice40.sv"
+Outside regex Elaborating source file "tempcode/3d0f0b16c4c69d7b3542ec408190fba274736dc62d4a1350fd20669f00cd7913/code.v"
+Outside regex Unresolved modules or udps:
+Outside regex   unknownmodule
+Outside regex 
+Outside regex   1 modules or udps unresolved after library processing - cannot continue.
+Outside regex   Unable to begin simulation.
+Outside regex End of OSS_CVC_7.00b-rhel6x at Sat Jul 27 18:06:02 2019 (elapsed 0.0 seconds).
+Outside regex 
+**tempcode/randomfilereplacement007/code.v(50) [CUSTOM_ERROR] This module does not exist!
+**tempcode/randomfilereplacement007/code.v(51) [CUSTOM_ERROR] This module does not exist!
+Outside regex OSS_CVC_7.00b-rhel6x of 07/07/14 (Linux-elf).
+Outside regex Copyright (c) 1991-2014 Tachyon Design Automation Corp.
+Outside regex   All Rights reserved.  Licensed software subject to prohibitions and
+Outside regex   restrictions.  See OSS CVC artistic license included with release.
+Outside regex Today is Sat Jul 27 18:07:54 2019.
+Outside regex Elaborating source file "sim_modules/tb_ice40.sv"
+Outside regex Elaborating source file "tempcode/9c91f1549d0ced588137170b1b162cb1907494d062907e256b5e44fb6f26e06e/code.v"
+Outside regex   DPI: all dpi_ import task/function routines found.
+Outside regex Highest level modules:
+Outside regex tb_ice40
+Outside regex   Compiling module 1 of 2.  Compiling module 2 of 2.
+Outside regex   CVC compilation 0.1 seconds elapsed.
+Outside regex End of OSS_CVC_7.00b-rhel6x at Sat Jul 27 18:07:55 2019 (elapsed 0.1 seconds).
+Outside regex 
+Starting 9c91f1549d0ced588137170b1b162cb1907494d062907e256b5e44fb6f26e06e
+Stopped 9c91f1549d0ced588137170b1b162cb1907494d062907e256b5e44fb6f26e06e
+Outside regex OSS_CVC_7.00b-rhel6x of 07/07/14 (Linux-elf).
+Outside regex Copyright (c) 1991-2014 Tachyon Design Automation Corp.
+Outside regex   All Rights reserved.  Licensed software subject to prohibitions and
+Outside regex   restrictions.  See OSS CVC artistic license included with release.
+Outside regex Today is Sat Jul 27 18:07:56 2019.
+Outside regex Elaborating source file "sim_modules/tb_ice40.sv"
+Outside regex Elaborating source file "tempcode/cd3c803fbb317495fab09428b12206d9a8d8b1bec8b792f055831b5e54b616fa/code.v"
+Outside regex Unresolved modules or udps:
+Outside regex   unknownmodule
+Outside regex 
+Outside regex   1 modules or udps unresolved after library processing - cannot continue.
+Outside regex   Unable to begin simulation.
+Outside regex End of OSS_CVC_7.00b-rhel6x at Sat Jul 27 18:07:56 2019 (elapsed 0.0 seconds).
+Outside regex 
+**tempcode/randomfilereplacement007/code.v(50) [CUSTOM_ERROR] This module does not exist!
+**tempcode/randomfilereplacement007/code.v(51) [CUSTOM_ERROR] This module does not exist!
+Outside regex OSS_CVC_7.00b-rhel6x of 07/07/14 (Linux-elf).
+Outside regex Copyright (c) 1991-2014 Tachyon Design Automation Corp.
+Outside regex   All Rights reserved.  Licensed software subject to prohibitions and
+Outside regex   restrictions.  See OSS CVC artistic license included with release.
+Outside regex Today is Sat Jul 27 18:08:00 2019.
+Outside regex Elaborating source file "sim_modules/tb_ice40.sv"
+Outside regex Elaborating source file "tempcode/1210264e2b48e749ca8c79dea08a070ced67b96cca8ca4679cc7f2b5551640e1/code.v"
+Outside regex   DPI: all dpi_ import task/function routines found.
+Outside regex Highest level modules:
+Outside regex tb_ice40
+Outside regex **tempcode/1210264e2b48e749ca8c79dea08a070ced67b96cca8ca4679cc7f2b5551640e1/code.v(118) WARN** [602] d0(ssdec) input port enable (line **tempcode/1210264e2b48e749ca8c79dea08a070ced67b96cca8ca4679cc7f2b5551640e1/code.v(122)) width 1 mismatch with 1 width 32
+Outside regex   Compiling module 1 of 4.  Compiling module 2 of 4.  Compiling module 3 of 4.  Compiling module 4 of 4.
+Outside regex   CVC compilation 0.1 seconds elapsed.
+Outside regex End of OSS_CVC_7.00b-rhel6x at Sat Jul 27 18:08:00 2019 (elapsed 0.2 seconds).
+Outside regex 
+Starting 1210264e2b48e749ca8c79dea08a070ced67b96cca8ca4679cc7f2b5551640e1

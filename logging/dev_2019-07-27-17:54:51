@@ -1,0 +1,13 @@
+[]
+Starting d349bea143913c71be51488effcb634bc1ffcbd4be81c4a4e4d35bba1a4a72b2
+Stopped d349bea143913c71be51488effcb634bc1ffcbd4be81c4a4e4d35bba1a4a72b2
+[]
+Starting 3a401ba6345cf876bf360600b8fe78cdd48557debebea2ebfc77e9d95a7adc92
+uncaughtException! Details: Error: ENOENT: no such file or directory, unlink '/home/menon18/nodejs_cvc/tempcode/3a401ba6345cf876bf360600b8fe78cdd48557debebea2ebfc77e9d95a7adc92/fpga'
+    at Object.unlinkSync (fs.js:956:3)
+    at WebSocket.close (/home/menon18/nodejs_cvc/js_cvc_interface.js:261:36)
+    at WebSocket.emit (events.js:203:15)
+    at WebSocket.emitClose (/home/menon18/nodejs_cvc/node_modules/ws/lib/websocket.js:193:10)
+    at Socket.socketOnClose (/home/menon18/nodejs_cvc/node_modules/ws/lib/websocket.js:861:15)
+    at Socket.emit (events.js:198:13)
+    at TCP._handle.close (net.js:606:12)

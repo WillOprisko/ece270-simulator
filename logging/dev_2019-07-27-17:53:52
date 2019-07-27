@@ -1,0 +1,69 @@
+OSS_CVC_7.00b-rhel6x of 07/07/14 (Linux-elf).
+Copyright (c) 1991-2014 Tachyon Design Automation Corp.
+  All Rights reserved.  Licensed software subject to prohibitions and
+  restrictions.  See OSS CVC artistic license included with release.
+Today is Sat Jul 27 17:53:54 2019.
+Elaborating source file "sim_modules/tb_ice40.sv"
+Elaborating source file "tempcode/559ef0b5ba1dcad16e8e470d0edd2b50ed17c1b74aa0f9ff54b090be701e90fd/code.v"
+Unresolved modules or udps:
+  unknownmodule
+
+  1 modules or udps unresolved after library processing - cannot continue.
+  Unable to begin simulation.
+End of OSS_CVC_7.00b-rhel6x at Sat Jul 27 17:53:54 2019 (elapsed 0.0 seconds).
+
+[]
+Starting 559ef0b5ba1dcad16e8e470d0edd2b50ed17c1b74aa0f9ff54b090be701e90fd
+uncaughtException! Details: Error: ENOENT: no such file or directory, unlink '/home/menon18/nodejs_cvc/tempcode/559ef0b5ba1dcad16e8e470d0edd2b50ed17c1b74aa0f9ff54b090be701e90fd/fpga'
+    at Object.unlinkSync (fs.js:956:3)
+    at WebSocket.close (/home/menon18/nodejs_cvc/js_cvc_interface.js:262:36)
+    at WebSocket.emit (events.js:203:15)
+    at WebSocket.emitClose (/home/menon18/nodejs_cvc/node_modules/ws/lib/websocket.js:193:10)
+    at Socket.socketOnClose (/home/menon18/nodejs_cvc/node_modules/ws/lib/websocket.js:861:15)
+    at Socket.emit (events.js:198:13)
+    at TCP._handle.close (net.js:606:12)
+OSS_CVC_7.00b-rhel6x of 07/07/14 (Linux-elf).
+Copyright (c) 1991-2014 Tachyon Design Automation Corp.
+  All Rights reserved.  Licensed software subject to prohibitions and
+  restrictions.  See OSS CVC artistic license included with release.
+Today is Sat Jul 27 17:54:16 2019.
+Elaborating source file "sim_modules/tb_ice40.sv"
+Elaborating source file "tempcode/b836bf22ff84fb7ded2a6dcdaa78765d95065cadecccc625e1047bb32d77a7a7/code.v"
+**tempcode/b836bf22ff84fb7ded2a6dcdaa78765d95065cadecccc625e1047bb32d77a7a7/code.v(49) ERROR** [995] I/O port declaration list comma or semicolon expected - reset_on_start read
+**tempcode/b836bf22ff84fb7ded2a6dcdaa78765d95065cadecccc625e1047bb32d77a7a7/code.v(49) ERROR** [992] output port name expected - . read
+Unresolved modules or udps:
+  unknownmodule
+
+  1 modules or udps unresolved after library processing - cannot continue.
+  Unable to begin simulation.
+End of OSS_CVC_7.00b-rhel6x at Sat Jul 27 17:54:16 2019 (elapsed 0.0 seconds).
+
+[ '**tempcode/b836bf22ff84fb7ded2a6dcdaa78765d95065cadecccc625e1047bb32d77a7a7/code.v(49) ERROR** [995] I/O port declaration list comma or semicolon expected - reset_on_start read',
+  '**tempcode/b836bf22ff84fb7ded2a6dcdaa78765d95065cadecccc625e1047bb32d77a7a7/code.v(49) ERROR** [992] output port name expected - . read' ]
+OSS_CVC_7.00b-rhel6x of 07/07/14 (Linux-elf).
+Copyright (c) 1991-2014 Tachyon Design Automation Corp.
+  All Rights reserved.  Licensed software subject to prohibitions and
+  restrictions.  See OSS CVC artistic license included with release.
+Today is Sat Jul 27 17:54:19 2019.
+Elaborating source file "sim_modules/tb_ice40.sv"
+Elaborating source file "tempcode/0aabf125166fb87f0680d210d60671c0d0939e8a6686f5f8cfd25bee34848790/code.v"
+Unresolved modules or udps:
+  unknownmodule
+
+  1 modules or udps unresolved after library processing - cannot continue.
+  Unable to begin simulation.
+End of OSS_CVC_7.00b-rhel6x at Sat Jul 27 17:54:19 2019 (elapsed 0.0 seconds).
+
+[]
+Starting 0aabf125166fb87f0680d210d60671c0d0939e8a6686f5f8cfd25bee34848790
+uncaughtException! Details: Error [ERR_STREAM_DESTROYED]: Cannot call write after a stream was destroyed
+    at doWrite (_stream_writable.js:411:19)
+    at writeOrBuffer (_stream_writable.js:399:5)
+    at Socket.Writable.write (_stream_writable.js:299:11)
+    at WebSocket.incoming (/home/menon18/nodejs_cvc/js_cvc_interface.js:250:78)
+    at WebSocket.emit (events.js:198:13)
+    at Receiver.receiverOnMessage (/home/menon18/nodejs_cvc/node_modules/ws/lib/websocket.js:800:20)
+    at Receiver.emit (events.js:198:13)
+    at Receiver.dataMessage (/home/menon18/nodejs_cvc/node_modules/ws/lib/receiver.js:422:14)
+    at Receiver.getData (/home/menon18/nodejs_cvc/node_modules/ws/lib/receiver.js:352:17)
+    at Receiver.startLoop (/home/menon18/nodejs_cvc/node_modules/ws/lib/receiver.js:138:22)

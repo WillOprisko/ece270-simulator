@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <title>ice40HX8K Simulator</title>
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700">
+  <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Amiko">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bitter:400,700">
+  <link rel="stylesheet" href="assets/css/Features-Clean.css">
+  <link rel="stylesheet" href="assets/css/Header-Dark.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.6.1/css/pikaday.min.css">
+  <link rel="stylesheet" href="assets/css/untitled.css">
+  <link rel="stylesheet" href="assets/fontawesome/css/all.css">
+  <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+  <style>
+  /* latin */
+  @font-face {
+    font-family: 'Courier';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Courier Std Medium'), local('CourierStd'), url("https://fonts.gstatic.com/l/font?kit=i7dKIFtyYSaNG9A_JrmedQ&skey=415f62b718dd1a36&v=v2") format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  </style>
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplebar/4.0.0/simplebar.css"> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.4/ace.js"></script>
+  <script src="assets/fontawesome/js/all.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/simplebar/4.0.0/simplebar.js"></script> -->
+  <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.6.8-fix/jquery.nicescroll.min.js"></script> -->
+  <!-- <script src="assets/js/jquery.nicescroll.js"></script> -->
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css"> -->
+  <!-- <script src="https://use.fontawesome.com/0f1418d9c7.js"></script> -->
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+  <div id="overlay_top" style="background-color: #fff; display: block; opacity: 1"></div>
+  <script>
+      if (!window.localStorage.lastSavedCode)
+      {
+        alert ("If you have never visited this page before, welcome! Glad to have you try this page out for the first time!\nIf you've used the simulator before, however, you might be browsing incognito. Take care to save your code to your computer, because the webpage will not be able to save it when your incognito session closes.")
+        closeTopOverlayOpacity = setInterval (function () {
+          if (document.getElementById("overlay_top").style.opacity == 0.0)
+          {
+            document.getElementById("overlay_top").style.display = "none"
+            editor.renderer.setShowGutter(true);
+            editor.renderer.scrollBarV.element.style ['display'] = ""
+            editor.renderer.scrollBarH.element.style ['display'] = ""
+            clearInterval (closeTopOverlayOpacity)
+          }
+          else
+          {
+            opacity = parseFloat (document.getElementById("overlay_top").style.opacity)
+            document.getElementById("overlay_top").style.opacity = opacity - 0.01
+            editor.renderer.setShowGutter(false);
+            editor.renderer.scrollBarV.element.style ['display'] = "none"
+            editor.renderer.scrollBarH.element.style ['display'] = "none"
+          }
+        }, 2)
+      }
+      document.getElementById("overlay_top").style.display = "none"
+  </script>
+  <div style="width: 100%;margin-right: auto;margin-left: auto;">
+    <nav class="navbar navbar-light navbar-special navbar-expand-md navigation-clean-button theme-select" style="height: 8vh; background-color: #f9f9f9">
+      <div class="d-flex justify-content-center" style="width: 100%;">
+        <div class="flex-row-reverse text-center" style="margin-left: 5vw; width: 30vw; float: left; align-items: start;">
+          <input id="save_as_elm" type="file" name="name" style="display: none"/>
+          <!-- <button class="btn btn-light btn-bevel" type="button" style="float: right; width: 100px; font-size: 16px; margin-right: 15px" onclick="javascript:document.getElementById('open_elm').click()">Open</button> -->
+          <i class="fal fa-file top-icon" style="float: left; width: calc(0.8vw + 1vh); height: calc(0.8vw + 1vh); margin-top: 12px; cursor: pointer" onclick="javascript:$.get({url: '270sim_source.v', cache: false}, function(data) { editor.setValue (data, -1); });"></i>
+          <i class="fal fa-folder-open top-icon" style="float: left; margin-left: 10px; width: calc(0.8vw + 1vh); height: calc(0.8vw + 1vh); margin-top: 12px; cursor: pointer" onclick="javascript:openVerilog()"></i>
+          <i class="fal fa-save top-icon" style="float: left; margin-left: 10px; width: calc(0.8vw + 1vh); height: calc(0.8vw + 1vh); margin-top: 12px; cursor: pointer" onclick="javascript:autosave_call(true)"></i>
+          <i class="fal fa-arrow-circle-down top-icon" style="float: left; margin-left: 10px; width: calc(0.8vw + 1vh); height: calc(0.8vw + 1vh); margin-top: 12px; cursor: pointer" onclick="javascript:saveVerilog()"></i>
+          <i class="fal fa-cogs top-icon" style="float: left; margin-left: 10px; width: calc(0.8vw + 1vh); height: calc(0.8vw + 1vh); margin-top: 12px; cursor: pointer" onclick="javascript:openSettings()"></i>
+          <h4 class="display-4 text-center" id="savedstat" style="float: left; margin-left: 20px; margin-top: 13px; font-size: 1.5vh; opacity: 0"></h4>
+          <input id="open_elm" type="file" name="name" style="display: none"/>
+          <a id="downlink" href="none" download="verilog.v" style="display: none"></a>
+        </div>
+        <div style="margin-left: -5vw; padding-right: 25vw">
+          <h1 class="display-4 text-center text-muted" style="font-size: calc(1.3vw + 0.5vh); width: auto; margin-top: 1vh">ice40HX8K Evaluation Board Simulator</h1>
+        </div>
+      </div>
+    </nav>
+    <nav class="navbar navbar-page-info navbar-special" id="status-navbar" style="vertical-align: middle; padding: 0px!important; background-color: #eaeaea">
+      <div class="d-flex justify-content-center" style="width: 100%; height: 100%; padding-top: 1.25vh; padding-bottom: 0.75vh">
+        <div class="col" style="height: 100%">
+          <div class="row justify-content-center" style="vertical-align: middle; margin-left: 8vw; padding-right: 3vw;">
+            <div class="col">
+              <h1 class="display-4 text-center text-muted" id="status-text" style="font-size: calc(0.4vh + 0.8vw);">Status: Ready</h1>
+            </div>
+            <a onclick="javascript:display_info(0); return false;"><h1 class="desc display-4 text-center text-muted" id="status-text" style="cursor: pointer; border-right: 1px solid gray; padding-left: 2.25vw; padding-right: 2.25vw; font-size: calc(0.4vh + 0.8vw);">About</h1></a>
+            <a onclick="javascript:display_info(1); return false;"><h1 class="desc display-4 text-center text-muted" id="status-text" style="cursor: pointer; border-right: 1px solid gray; padding-left: 2.25vw; padding-right: 2.25vw; font-size: calc(0.4vh + 0.8vw);">Functionality</h1></a>
+            <a onclick="javascript:display_info(2); return false;"><h1 class="desc display-4 text-center text-muted" id="status-text" style="cursor: pointer; border-right: 1px solid gray; padding-left: 2.25vw; padding-right: 2.25vw; font-size: calc(0.4vh + 0.8vw);">Usage</h1></a>
+            <a onclick="javascript:display_info(3); return false;"><h1 class="desc display-4 text-center text-muted" id="status-text" style="cursor: pointer; border-right: 1px solid gray; padding-left: 2.25vw; padding-right: 2.25vw; font-size: calc(0.4vh + 0.8vw);">Credits</h1></a>
+            <a onclick="javascript:display_info(4); return false;"><h1 class="desc display-4 text-center text-muted" id="status-text" style="cursor: pointer; border-right: 1px solid gray; padding-left: 2.25vw; padding-right: 2.25vw; font-size: calc(0.4vh + 0.8vw);">Privacy</h1></a>
+            <a onclick="javascript:display_info(5); return false;"><h1 class="desc display-4 text-center text-muted" id="status-text" style="cursor: pointer;                               padding-left: 2.25vw; padding-right: 2.25vw; font-size: calc(0.4vh + 0.8vw);">Source</h1></a>
+            <div style="margin-left: 10vw"></div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <nav class="description-navbar" id="description-navbar" style="max-height: 0; transition: max-height 0.2s ease-out; overflow: hidden; background-color: #dfdfdf">
+      <p class="display-4 text-center text-muted" id="desctext" style="padding-top: 2vh; padding-left: 20vw; padding-right: 20vw; font-size: calc(0.4vh + 0.8vw)"></p>
+    </nav>
+    <div style="padding-bottom: 3vh"> </div>
+    <div class="row justify-content-center">
+      <div class="row text-center d-sm-flex d-xl-flex justify-content-center" style="text-align: center; width: 100%">
+        <div class="col-md-6" style="max-width: calc(15vw + 20vh); padding-right: 1px">
+          <svg id="ice40HX8K" preserveAspectRatio="xMidYMid meet" viewBox="0 0 650 690" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="svg_127_blur" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="0"/>
+              </filter>
+            </defs>
+            <g>
+              <rect x="-1" y="-1" width="610" height="702" id="canvas_background" fill="#17183f"/>
+              <g id="canvasGrid" display="none">
+                <rect id="svg_2" width="100%" height="100%" x="0" y="0" stroke-width="0" fill="url(#gridpattern)"/>
+              </g>
+            </g>
+            <g xmlns="http://www.w3.org/2000/svg">
+              <rect fill="#111" stroke-width="1.5" x="14.997626" y="49.661171" width="52.941165" height="106.372523" id="svg_1" stroke="#000" opacity="0.5"></rect>
+              <ellipse class="ss7_line" fill="#222" stroke="#333" stroke-width="3" stroke-opacity="null" fill-opacity="null" filter="url(#svg_127_blur)" ry="2" rx="2"  cy="145.50805" cx="60.80111" id="ss7_dp"/>
+              <line class="ss7_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="24.845323" y1="104.305744" x2="57.531162" y2="104.305744" id="ss7_g" stroke-linejoin="bevel" stroke-linecap="round" ></line>
+              <line class="ss7_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="6.828724" y1="83.933263" x2="40.5086" y2="83.933263" id="ss7_f" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 23.668663024902333,83.93326568603517) "></line>
+              <line class="ss7_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="6.828724" y1="119.160417" x2="40.5086" y2="119.160417" id="ss7_e" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 23.668663024902333,119.16041564941408) "></line>
+              <line class="ss7_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="24.845323" y1="136.532898" x2="57.531162" y2="136.532898" id="ss7_d" stroke-linejoin="bevel" stroke-linecap="round" ></line>
+              <line class="ss7_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="41.719314" y1="118.862279" x2="75.597999" y2="118.862279" id="ss7_c" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 58.65866088867187,118.86228179931642) "></line>
+              <line class="ss7_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="41.719314" y1="83.635124" x2="75.597999" y2="83.635124" id="ss7_b" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 58.65866088867187,83.63512420654298) "></line>
+              <line class="ss7_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="24.845323" y1="63.57354" x2="57.531162" y2="63.57354" id="ss7_a" stroke-linejoin="bevel" stroke-linecap="round" ></line>
+              <rect fill="#111" stroke-width="1.5" x="89.24782" y="49.06097" width="52.941165" height="106.372523" id="svg_23" stroke="#000" opacity="0.5"></rect>
+              <ellipse class="ss6_line" fill="#222" stroke="#333" stroke-width="3" stroke-opacity="null" fill-opacity="null" filter="url(#svg_127_blur)" ry="2" rx="2"  cy="145.50805" cx="135.00111" id="ss7_dp"/>
+              <line class="ss6_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="99.396218" y1="101.377501" x2="132.082057" y2="101.377501" id="ss6_g" stroke-linejoin="bevel" stroke-linecap="round" ></line>
+              <line class="ss6_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="81.379619" y1="84.00502" x2="115.059495" y2="84.00502" id="ss6_f" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 98.21957397460938,84.00504302978517) "></line>
+              <line class="ss6_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="81.379619" y1="119.232175" x2="115.059495" y2="119.232175" id="ss6_e" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 98.21957397460939,119.23160552978516) "></line>
+              <line class="ss6_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="99.396218" y1="136.604656" x2="132.082057" y2="136.604656" id="ss6_d" stroke-linejoin="bevel" stroke-linecap="round" ></line>
+              <line class="ss6_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="116.270209" y1="118.934036" x2="150.148894" y2="118.934036" id="ss6_c" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 133.2095642089844,118.93347167968751) "></line>
+              <line class="ss6_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="116.270209" y1="83.706882" x2="150.148894" y2="83.706882" id="ss6_b" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 133.2095642089844,83.70690155029298) "></line>
+              <line class="ss6_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="99.396218" y1="65.645298" x2="132.082057" y2="65.645298" id="ss6_a" stroke-linejoin="bevel" stroke-linecap="round" ></line>
+              <rect fill="#111" stroke-width="1.5" x="164.1867" y="49.383105" width="52.941165" height="106.372523" id="svg_79" stroke="#000" opacity="0.5"></rect>
+              <ellipse class="ss5_line" fill="#222" stroke="#333" stroke-width="3" stroke-opacity="null" fill-opacity="null" filter="url(#svg_127_blur)" ry="2" rx="2"  cy="145.50805" cx="210.00111" id="ss7_dp"/>
+              <line class="ss5_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="174.335098" y1="101.699636" x2="207.020937" y2="101.699636" id="ss5_g" stroke-linejoin="bevel" stroke-linecap="round" ></line>
+              <line class="ss5_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="156.318499" y1="84.327155" x2="189.998376" y2="84.327155" id="ss5_f" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 173.1584625244141,84.32717132568361) "></line>
+              <line class="ss5_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="156.318499" y1="119.55431" x2="189.998376" y2="119.55431" id="ss5_e" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 173.1584625244141,119.55374908447267) "></line>
+              <line class="ss5_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="174.335098" y1="136.926791" x2="207.020937" y2="136.926791" id="ss5_d" stroke-linejoin="bevel" stroke-linecap="round" ></line>
+              <line class="ss5_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="191.209089" y1="119.256171" x2="225.087774" y2="119.256171" id="ss5_c" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 208.1484527587891,119.25561523437501) "></line>
+              <line class="ss5_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="191.209089" y1="84.029017" x2="225.087774" y2="84.029017" id="ss5_b" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 208.1484527587891,84.02902984619142) "></line>
+              <line class="ss5_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="174.335098" y1="65.967433" x2="207.020937" y2="65.967433" id="ss5_a" stroke-linejoin="bevel" stroke-linecap="round" ></line>
+              <rect fill="#111" stroke-width="1.5" x="238.737595" y="50.281309" width="52.941165" height="106.372523" id="svg_87" stroke="#000" opacity="0.5"></rect>
+              <ellipse class="ss4_line" fill="#222" stroke="#333" stroke-width="3" stroke-opacity="null" fill-opacity="null" filter="url(#svg_127_blur)" ry="2" rx="2"  cy="145.50805" cx="285.00111" id="ss7_dp"/>
+              <line class="ss4_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="248.885993" y1="102.59784" x2="281.571832" y2="102.59784" id="ss4_g" stroke-linejoin="bevel" stroke-linecap="round" ></line>
+              <line class="ss4_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="230.869394" y1="85.225359" x2="264.54927" y2="85.225359" id="ss4_f" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 247.7093505859375,85.22537994384768) "></line>
+              <line class="ss4_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="230.869394" y1="120.452513" x2="264.54927" y2="120.452513" id="ss4_e" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 247.70935058593753,120.4519500732422) "></line>
+              <line class="ss4_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="248.885993" y1="137.824994" x2="281.571832" y2="137.824994" id="ss4_d" stroke-linejoin="bevel" stroke-linecap="round" ></line>
+              <line class="ss4_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="265.759984" y1="120.154375" x2="299.638669" y2="120.154375" id="ss4_c" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 282.69934082031256,120.15381622314456) "></line>
+              <line class="ss4_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="265.759984" y1="84.92722" x2="299.638669" y2="84.92722" id="ss4_b" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 282.69934082031256,84.9272384643555) "></line>
+              <line class="ss4_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="248.885993" y1="66.865636" x2="281.571832" y2="66.865636" id="ss4_a" stroke-linejoin="bevel" stroke-linecap="round" ></line>
+              <rect fill="#111" stroke-width="1.5" x="314.166469" y="49.988841" width="52.941165" height="106.372523" id="svg_95" stroke="#000" opacity="0.5"></rect>
+              <ellipse class="ss3_line" fill="#222" stroke="#333" stroke-width="3" stroke-opacity="null" fill-opacity="null" filter="url(#svg_127_blur)" ry="2" rx="2"  cy="145.50805" cx="360.00111" id="ss7_dp"/>
+              <line class="ss3_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="324.314866" y1="102.305372" x2="357.000705" y2="102.305372" id="ss3_g" stroke-linejoin="bevel" stroke-linecap="round" ></line>
+              <line class="ss3_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="306.298267" y1="84.932891" x2="339.978144" y2="84.932891" id="ss3_f" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 323.1382141113282,84.93290710449222) "></line>
+              <line class="ss3_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="306.298267" y1="120.160045" x2="339.978144" y2="120.160045" id="ss3_e" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 323.1382141113282,120.15947723388675) "></line>
+              <line class="ss3_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="324.314866" y1="137.532526" x2="357.000705" y2="137.532526" id="ss3_d" stroke-linejoin="bevel" stroke-linecap="round" ></line>
+              <line class="ss3_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="341.188858" y1="119.861907" x2="375.067543" y2="119.861907" id="ss3_c" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 358.1282043457032,119.86134338378909) "></line>
+              <line class="ss3_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="341.188858" y1="84.634752" x2="375.067543" y2="84.634752" id="ss3_b" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 358.1282043457031,84.63476562500004) "></line>
+              <line class="ss3_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="324.314866" y1="66.573168" x2="357.000705" y2="66.573168" id="ss3_a" stroke-linejoin="bevel" stroke-linecap="round" ></line>
+              <rect fill="#111" stroke-width="1.5" x="388.717364" y="50.887044" width="52.941165" height="106.372523" id="svg_103" stroke="#000" opacity="0.5"></rect>
+              <ellipse class="ss2_line" fill="#222" stroke="#333" stroke-width="3" stroke-opacity="null" fill-opacity="null" filter="url(#svg_127_blur)" ry="2" rx="2"  cy="145.50805" cx="435.00111" id="ss7_dp"/>
+              <line class="ss2_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="398.865761" y1="103.203575" x2="431.5516" y2="103.203575" id="ss2_g" stroke-linejoin="bevel" stroke-linecap="round" ></line>
+              <line class="ss2_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="380.849162" y1="85.831094" x2="414.529039" y2="85.831094" id="ss2_f" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 397.6891174316406,85.83111572265629) "></line>
+              <line class="ss2_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="380.849162" y1="121.058249" x2="414.529039" y2="121.058249" id="ss2_e" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 397.6891174316406,121.05767822265629) "></line>
+              <line class="ss2_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="398.865761" y1="138.43073" x2="431.5516" y2="138.43073" id="ss2_d" stroke-linejoin="bevel" stroke-linecap="round" ></line>
+              <line class="ss2_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="415.509752" y1="121.760111" x2="448.518437" y2="121.760111" id="ss2_c" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 432.6791076660156,121.59544372558598) "></line>
+              <line class="ss2_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="415.739752" y1="85.532956" x2="449.618437" y2="85.532956" id="ss2_b" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 432.6791076660156,85.5329742431641) "></line>
+              <line class="ss2_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="398.865761" y1="67.471372" x2="431.5516" y2="67.471372" id="ss2_a" stroke-linejoin="bevel" stroke-linecap="round" ></line>
+              <rect fill="#111" stroke-width="1.5" x="463.656244" y="50.382733" width="52.941165" height="106.372523" id="svg_111" stroke="#000" opacity="0.5"></rect>
+              <ellipse class="ss1_line" fill="#222" stroke="#333" stroke-width="3" stroke-opacity="null" fill-opacity="null" filter="url(#svg_127_blur)" ry="2" rx="2"  cy="145.50805" cx="510.00111" id="ss7_dp"/>
+              <line class="ss1_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="473.804641" y1="102.699264" x2="506.49048" y2="102.699264" id="ss1_g" stroke-linejoin="bevel" stroke-linecap="round" ></line>
+              <line class="ss1_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="455.788043" y1="85.326783" x2="489.467919" y2="85.326783" id="ss1_f" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 472.62799072265625,85.3267974853516) "></line>
+              <line class="ss1_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="455.788043" y1="120.553938" x2="489.467919" y2="120.553938" id="ss1_e" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 472.62799072265625,120.55337524414067) "></line>
+              <line class="ss1_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="473.804641" y1="137.926419" x2="506.49048" y2="137.926419" id="ss1_d" stroke-linejoin="bevel" stroke-linecap="round" ></line>
+              <line class="ss1_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="490.678633" y1="120.2558" x2="524.557318" y2="120.2558" id="ss1_c" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 507.61712646484375,120.25524139404301) "></line>
+              <line class="ss1_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="490.678633" y1="85.028645" x2="524.557318" y2="85.028645" id="ss1_b" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 507.61712646484375,85.02865600585942) "></line>
+              <line class="ss1_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="473.804641" y1="66.967061" x2="506.49048" y2="66.967061" id="ss1_a" stroke-linejoin="bevel" stroke-linecap="round" ></line>
+              <rect fill="#111" stroke-width="1.5" x="538.207139" y="50.454491" width="52.941165" height="106.372523" id="svg_119" stroke="#000" opacity="0.5"></rect>
+              <ellipse class="ss0_line" fill="#222" stroke="#333" stroke-width="3" stroke-opacity="null" fill-opacity="null" filter="url(#svg_127_blur)" ry="2" rx="2"  cy="145.50805" cx="585.00111" id="ss7_dp"/>
+              <line class="ss0_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="548.355536" y1="102.771022" x2="581.041375" y2="102.771022" id="ss0_g" stroke-linejoin="bevel" stroke-linecap="round" ></line>
+              <line class="ss0_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="530.338937" y1="85.398541" x2="564.018814" y2="85.398541" id="ss0_f" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 547.1780395507814,85.39855957031254) "></line>
+              <line class="ss0_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="530.338937" y1="120.625696" x2="564.018814" y2="120.625696" id="ss0_e" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 547.1780395507814,120.62512969970707) "></line>
+              <line class="ss0_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="548.355536" y1="137.998177" x2="581.041375" y2="137.998177" id="ss0_d" stroke-linejoin="bevel" stroke-linecap="round" ></line>
+              <line class="ss0_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="565.229528" y1="120.327557" x2="599.108213" y2="120.327557" id="ss0_c" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 582.1680297851564,120.32699584960942) "></line>
+              <line class="ss0_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="565.229528" y1="85.100403" x2="599.108213" y2="85.100403" id="ss0_b" stroke-linejoin="bevel" stroke-linecap="round" stroke="#000" transform="rotate(90 582.1680297851564,85.10041809082036) "></line>
+              <line class="ss0_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="548.355536" y1="67.038819" x2="581.041375" y2="67.038819" id="ss0_a" stroke-linejoin="bevel" stroke-linecap="round" ></line>
+              <ellipse class="lftred" fill="#300" stroke-width="1.25" stroke-opacity="null" cx="254.64426" cy="205.429383" id="lf_0" rx="11.157021" ry="11.157021" filter="url(#svg_127_blur)" stroke="#000"></ellipse>
+              <ellipse class="lftred" fill="#300" stroke-width="1.25" stroke-opacity="null" cx="224.290984" cy="205.429383" id="lf_1" rx="11.157021" ry="11.157021" filter="url(#svg_127_blur)" stroke="#000"></ellipse>
+              <ellipse class="lftred" fill="#300" stroke-width="1.25" stroke-opacity="null" cx="194.69697" cy="205.026157" id="lf_2" rx="11.157021" ry="11.157021" filter="url(#svg_127_blur)" stroke="#000"></ellipse>
+              <ellipse class="lftred" fill="#300" stroke-width="1.25" stroke-opacity="null" cx="164.777596" cy="205.026157" id="lf_3" rx="11.157021" ry="11.157021" filter="url(#svg_127_blur)" stroke="#000"></ellipse>
+              <ellipse class="lftred" fill="#300" stroke-width="1.25" stroke-opacity="null" cx="134.739677" cy="204.948612" id="lf_4" rx="11.157021" ry="11.157021" filter="url(#svg_127_blur)" stroke="#000"></ellipse>
+              <ellipse class="lftred" fill="#300" stroke-width="1.25" stroke-opacity="null" cx="104.386401" cy="204.948612" id="lf_5" rx="11.157021" ry="11.157021" filter="url(#svg_127_blur)" stroke="#000"></ellipse>
+              <ellipse class="lftred" fill="#300" stroke-width="1.25" stroke-opacity="null" cx="74.792387" cy="204.545386" id="lf_6" rx="11.157021" ry="11.157021" filter="url(#svg_127_blur)" stroke="#000"></ellipse>
+              <ellipse class="lftred" fill="#300" stroke-width="1.25" stroke-opacity="null" cx="44.873013" cy="204.545386" id="lf_7" rx="11.157021" ry="11.157021" filter="url(#svg_127_blur)" stroke="#000"></ellipse>
+              <ellipse id="rgbled"    fill="#111" stroke-width="1.25" stroke-opacity="null" cx="303.099804" cy="205.429383" rx="15" ry="15" filter="url(#svg_127_blur)" stroke="#000"></ellipse>
+              <ellipse class="rgtred" fill="#300" stroke-width="1.25" stroke-opacity="null" cx="563.676537" cy="205.429383" id="rt_0" rx="11.157021" ry="11.157021" filter="url(#svg_127_blur)" stroke="#000"></ellipse>
+              <ellipse class="rgtred" fill="#300" stroke-width="1.25" stroke-opacity="null" cx="533.323261" cy="205.429383" id="rt_1" rx="11.157021" ry="11.157021" filter="url(#svg_127_blur)" stroke="#000"></ellipse>
+              <ellipse class="rgtred" fill="#300" stroke-width="1.25" stroke-opacity="null" cx="503.729247" cy="205.026157" id="rt_2" rx="11.157021" ry="11.157021" filter="url(#svg_127_blur)" stroke="#000"></ellipse>
+              <ellipse class="rgtred" fill="#300" stroke-width="1.25" stroke-opacity="null" cx="473.809873" cy="205.026157" id="rt_3" rx="11.157021" ry="11.157021" filter="url(#svg_127_blur)" stroke="#000"></ellipse>
+              <ellipse class="rgtred" fill="#300" stroke-width="1.25" stroke-opacity="null" cx="443.771954" cy="204.948612" id="rt_4" rx="11.157021" ry="11.157021" filter="url(#svg_127_blur)" stroke="#000"></ellipse>
+              <ellipse class="rgtred" fill="#300" stroke-width="1.25" stroke-opacity="null" cx="413.418678" cy="204.948612" id="rt_5" rx="11.157021" ry="11.157021" filter="url(#svg_127_blur)" stroke="#000"></ellipse>
+              <ellipse class="rgtred" fill="#300" stroke-width="1.25" stroke-opacity="null" cx="383.824664" cy="204.545386" id="rt_6" rx="11.157021" ry="11.157021" filter="url(#svg_127_blur)" stroke="#000"></ellipse>
+              <ellipse class="rgtred" fill="#300" stroke-width="1.25" stroke-opacity="null" cx="353.90529" cy="204.545386" id="rt_7" rx="11.157021" ry="11.157021" filter="url(#svg_127_blur)" stroke="#000"></ellipse>
+
+              <a onmousedown="javascript:toggle_button (event, 16); return false;" onmouseup="javascript:toggle_button (event, 16); return false;" style="text-decoration: none">
+                <g>
+                  <rect class="inputbutton" pressed=false id="KeyW" stroke="#000" fill="#333666" stroke-width="1.25" stroke-opacity="null" x="413.129016" y="258.129053" width="64.838718" height="65.483867" style="cursor: pointer" id="sw12" rx="5"></rect>
+                  <text class="svg_text" id="textW" x="438.129016" y="298.5" font-family="Courier" font-size="28" fill="white" style="cursor: pointer">W</text>
+                </g>
+              </a>
+              <a onmousedown="javascript:toggle_button (event, 17); return false;" onmouseup="javascript:toggle_button (event, 17); return false;" style="text-decoration: none">
+                <g>
+                  <rect class="inputbutton" pressed=false id="KeyX" stroke="#000" fill="#333666" stroke-width="1.25" stroke-opacity="null" x="318.129016" y="258.129053" width="64.838718" height="65.483867" style="cursor: pointer" id="sw13" rx="5"></rect>
+                  <text class="svg_text" id="textX" x="344.129016" y="298.5" font-family="Courier" font-size="28" fill="white" style="cursor: pointer">X</text>
+                </g>
+              </a>
+              <a onmousedown="javascript:toggle_button (event, 18); return false;" onmouseup="javascript:toggle_button (event, 18); return false;" style="text-decoration: none">
+                <g>
+                  <rect class="inputbutton" pressed=false id="KeyY" stroke="#000" fill="#333666" stroke-width="1.25" stroke-opacity="null" x="224.129016" y="258.129053" width="64.838718" height="65.483867" style="cursor: pointer" id="sw14" rx="5"></rect>
+                  <text class="svg_text" id="textY" x="250.129016" y="298.5" font-family="Courier" font-size="28" fill="white" style="cursor: pointer">Y</text>
+                </g>
+              </a>
+              <a onmousedown="javascript:toggle_button (event, 19); return false;" onmouseup="javascript:toggle_button (event, 19); return false;" style="text-decoration: none">
+                <g>
+                  <rect class="inputbutton" pressed=false id="KeyZ" stroke="#000" fill="#333666" stroke-width="1.25" stroke-opacity="null" x="130.129016" y="258.129053" width="64.838718" height="65.483867" style="cursor: pointer" id="sw15" rx="5"></rect>
+                  <text class="svg_text" id="textZ" x="155.129016" y="298.5" font-family="Courier" font-size="28" fill="white" style="cursor: pointer">Z</text>
+                </g>
+              </a>
+              <a onmousedown="javascript:toggle_button (event, 12); return false;" onmouseup="javascript:toggle_button (event, 12); return false;" style="text-decoration: none">
+                <g>
+                  <rect class="inputbutton" pressed=false id="KeyC" stroke="#000" fill="#333666" stroke-width="1.25" stroke-opacity="null" x="413.129016" y="336.129053" width="64.838718" height="65.483867" style="cursor: pointer" id="sw8" rx="5"></rect>
+                  <text class="svg_text" id="textC" x="438.129016" y="376.129053" font-family="Courier" font-size="28" fill="white" style="cursor: pointer">C</text>
+                </g>
+              </a>
+              <a onmousedown="javascript:toggle_button (event, 13); return false;" onmouseup="javascript:toggle_button (event, 13); return false;" style="text-decoration: none">
+                <g>
+                  <rect class="inputbutton" pressed=false id="KeyD" stroke="#000" fill="#333666" stroke-width="1.25" stroke-opacity="null" x="318.129016" y="336.129053" width="64.838718" height="65.483867" style="cursor: pointer" id="sw9" rx="5"></rect>
+                  <text class="svg_text" id="textD" x="344.129016" y="376.129053" font-family="Courier" font-size="28" fill="white" style="cursor: pointer">D</text>
+                </g>
+              </a>
+              <a onmousedown="javascript:toggle_button (event, 14); return false;" onmouseup="javascript:toggle_button (event, 14); return false;" style="text-decoration: none">
+                <g>
+                  <rect class="inputbutton" pressed=false id="KeyE" stroke="#000" fill="#333666" stroke-width="1.25" stroke-opacity="null" x="224.129016" y="336.129053" width="64.838718" height="65.483867" style="cursor: pointer" id="sw10" rx="5"></rect>
+                  <text class="svg_text" id="textE" x="250.129016" y="376.129053" font-family="Courier" font-size="28" fill="white" style="cursor: pointer">E</text>
+                </g>
+              </a>
+              <a onmousedown="javascript:toggle_button (event, 15); return false;" onmouseup="javascript:toggle_button (event, 15); return false;" style="text-decoration: none">
+                <g>
+                  <rect class="inputbutton" pressed=false id="KeyF" stroke="#000" fill="#333666" stroke-width="1.25" stroke-opacity="null" x="130.129016" y="336.129053" width="64.838718" height="65.483867" style="cursor: pointer" id="sw11" rx="5"></rect>
+                  <text class="svg_text" id="textF" x="155.129016" y="376.129053" font-family="Courier" font-size="28" fill="white" style="cursor: pointer">F</text>
+                </g>
+              </a>
+              <a onmousedown="javascript:toggle_button (event, 8); return false;" onmouseup="javascript:toggle_button (event, 8); return false;" style="text-decoration: none">
+                <g>
+                  <rect class="inputbutton" pressed=false id="key8" stroke="#000" fill="#333666" stroke-width="1.25" stroke-opacity="null" x="413.129016" y="415.129053" width="64.838718" height="65.483867" style="cursor: pointer" id="sw4" rx="5"></rect>
+                  <text class="svg_text" id="text8" x="438.129016" y="455.129053" font-family="Courier" font-size="28" fill="white" style="cursor: pointer">8</text>
+                </g>
+              </a>
+              <a onmousedown="javascript:toggle_button (event, 9); return false;" onmouseup="javascript:toggle_button (event, 9); return false;" style="text-decoration: none">
+                <g>
+                  <rect class="inputbutton" pressed=false id="key9" stroke="#000" fill="#333666" stroke-width="1.25" stroke-opacity="null" x="318.129016" y="415.129053" width="64.838718" height="65.483867" style="cursor: pointer" id="sw5" rx="5"></rect>
+                  <text class="svg_text" id="text9" x="344.129016" y="455.129053" font-family="Courier" font-size="28" fill="white" style="cursor: pointer">9</text>
+                </g>
+              </a>
+              <a onmousedown="javascript:toggle_button (event, 10); return false;" onmouseup="javascript:toggle_button (event, 10); return false;" style="text-decoration: none">
+                <g>
+                  <rect class="inputbutton" pressed=false id="KeyA" stroke="#000" fill="#333666" stroke-width="1.25" stroke-opacity="null" x="224.129016" y="415.129053" width="64.838718" height="65.483867" style="cursor: pointer" id="sw6" rx="5"></rect>
+                  <text class="svg_text" id="textA" x="250.129016" y="455.129053" font-family="Courier" font-size="28" fill="white" style="cursor: pointer">A</text>
+                </g>
+              </a>
+              <a onmousedown="javascript:toggle_button (event, 11); return false;" onmouseup="javascript:toggle_button (event, 11); return false;" style="text-decoration: none">
+                <g>
+                  <rect class="inputbutton" pressed=false id="KeyB" stroke="#000" fill="#333666" stroke-width="1.25" stroke-opacity="null" x="130.129016" y="415.129053" width="64.838718" height="65.483867" style="cursor: pointer" id="sw7" rx="5"></rect>
+                  <text class="svg_text" id="textB" x="155.129016" y="455.129053" font-family="Courier" font-size="28" fill="white" style="cursor: pointer">B</text>
+                </g>
+              </a>
+              <a onmousedown="javascript:toggle_button (event, 4); return false;" onmouseup="javascript:toggle_button (event, 4); return false;" style="text-decoration: none">
+                <g>
+                  <rect class="inputbutton" pressed=false id="key4" stroke="#000" fill="#333666" text="0" stroke-width="1.25" stroke-opacity="null" x="413.129016" y="495.129053" width="64.838718" height="65.483867" style="cursor: pointer" id="sw0" rx="5"></rect>
+                  <text class="svg_text" id="text4" x="438.129016" y="535.129053" font-family="Courier" font-size="28" fill="white" style="cursor: pointer">4</text>
+                </g>
+              </a>
+              <a onmousedown="javascript:toggle_button (event, 5); return false;" onmouseup="javascript:toggle_button (event, 5); return false;" style="text-decoration: none">
+                <g>
+                  <rect class="inputbutton" pressed=false id="key5" stroke="#000" fill="#333666" stroke-width="1.25" stroke-opacity="null" x="318.129016" y="495.129053" width="64.838718" height="65.483867" style="cursor: pointer" id="sw1" rx="5"></rect>
+                  <text class="svg_text" id="text5" x="344.129016" y="535.129053" font-family="Courier" font-size="28" fill="white" style="cursor: pointer">5</text>
+                </g>
+              </a>
+              <a onmousedown="javascript:toggle_button (event, 6); return false;" onmouseup="javascript:toggle_button (event, 6); return false;" style="text-decoration: none">
+                <g>
+                  <rect class="inputbutton" pressed=false id="key6" stroke="#000" fill="#333666" stroke-width="1.25" stroke-opacity="null" x="224.129016" y="495.129053" width="64.838718" height="65.483867" style="cursor: pointer" id="sw2" rx="5"></rect>
+                  <text class="svg_text" id="text6" x="250.129016" y="535.129053" font-family="Courier" font-size="28" fill="white" style="cursor: pointer">6</text>
+                </g>
+              </a>
+              <a onmousedown="javascript:toggle_button (event, 7); return false;" onmouseup="javascript:toggle_button (event, 7); return false;" style="text-decoration: none">
+                <g>
+                  <rect class="inputbutton" pressed=false id="key7" stroke="#000" fill="#333666" stroke-width="1.25" stroke-opacity="null" x="130.129016" y="495.129053" width="64.838718" height="65.483867" style="cursor: pointer" id="sw3" rx="5"></rect>
+                  <text class="svg_text" id="text7" x="155.129016" y="535.129053" font-family="Courier" font-size="28" fill="white" style="cursor: pointer">7</text>
+                </g>
+              </a>
+              <a onmousedown="javascript:toggle_button (event, 0); return false;" onmouseup="javascript:toggle_button (event, 0); return false;" style="text-decoration: none">
+                <g>
+                  <rect class="inputbutton" pressed=false id="key0" stroke="#000" fill="#333666" text="0" stroke-width="1.25" stroke-opacity="null" x="413.129016" y="575.129053" width="64.838718" height="65.483867" style="cursor: pointer" id="sw0" rx="5"></rect>
+                  <text class="svg_text" id="text0" x="438.129016" y="615.129053" font-family="Courier" font-size="28" fill="white" style="cursor: pointer">0</text>
+                </g>
+              </a>
+              <a onmousedown="javascript:toggle_button (event, 1); return false;" onmouseup="javascript:toggle_button (event, 1); return false;" style="text-decoration: none">
+                <g>
+                  <rect class="inputbutton" pressed=false id="key1" stroke="#000" fill="#333666" stroke-width="1.25" stroke-opacity="null" x="318.129016" y="575.129053" width="64.838718" height="65.483867" style="cursor: pointer" id="sw1" rx="5"></rect>
+                  <text class="svg_text" id="text1" x="344.129016" y="615.129053" font-family="Courier" font-size="28" fill="white" style="cursor: pointer">1</text>
+                </g>
+              </a>
+              <a onmousedown="javascript:toggle_button (event, 2); return false;" onmouseup="javascript:toggle_button (event, 2); return false;" style="text-decoration: none">
+                <g>
+                  <rect class="inputbutton" pressed=false id="key2" stroke="#000" fill="#333666" stroke-width="1.25" stroke-opacity="null" x="224.129016" y="575.129053" width="64.838718" height="65.483867" style="cursor: pointer" id="sw2" rx="5"></rect>
+                  <text class="svg_text" id="text2" x="250.129016" y="615.129053" font-family="Courier" font-size="28" fill="white" style="cursor: pointer">2</text>
+                </g>
+              </a>
+              <a onmousedown="javascript:toggle_button (event, 3); return false;" onmouseup="javascript:toggle_button (event, 3); return false;" style="text-decoration: none">
+                <g>
+                  <rect class="inputbutton" pressed=false id="key3" stroke="#000" fill="#333666" stroke-width="1.25" stroke-opacity="null" x="130.129016" y="575.129053" width="64.838718" height="65.483867" style="cursor: pointer" id="sw3" rx="5"></rect>
+                  <text class="svg_text" id="text3" x="155.129016" y="615.129053" font-family="Courier" font-size="28" fill="white" style="cursor: pointer">3</text>
+                </g>
+              </a>
+
+            </g>
+          </svg>
+          <div class="col align-self-center">
+            <div class="d-xl-flex justify-content-xl-center">
+              <div class="row justify-content-xl-center" style="padding-top: 30px;font-size: 32px;">
+                <button class="btn btn-info btn-bevel btn-filter" id="btn-load"  type="button" style="vertical-align: middle; width: 10vw; height: calc(2vh+1vw); margin-right: 15px; margin-bottom: 4px; font-size: 1vw;" onclick="javascript:load_template(event)">Reopen Code</button>
+                <button class="btn btn-primary btn-bevel btn-filter"             type="button" style="vertical-align: middle; width: 10vw; height: calc(2vh+1vw); margin-right: 15px; margin-bottom: 4px; font-size: 1vw;" onclick="javascript:ice40hx8k_handler();">Simulate</button>
+              </div>
+            </div>
+            <div class="d-xl-flex justify-content-xl-center">
+              <div class="row justify-content-xl-center" style="padding-top: 10px;font-size: 32px;padding-bottom: 50px;">
+                <button class="btn btn-dark btn-bevel btn-filter"    type="button" style="vertical-align: middle; align-content: center; width: 6vw; height: calc(2vh+1vw); margin-right: 15px; margin-bottom: 6px; font-size: 1vw;" onclick="javascript:demo_handler()">Demo</button>
+                <button class="btn btn-warning btn-bevel btn-filter" type="button" style="vertical-align: middle; align-content: center; width: 6vw; height: calc(2vh+1vw); margin-right: 15px; margin-bottom: 6px; font-size: 1vw;" onclick="javascript:stop_handler()">Stop</button>
+                <button class="btn btn-danger btn-bevel btn-filter" type="button" style="vertical-align: middle; align-content: center; width: 6vw; height: calc(2vh+1vw); margin-right: 15px; margin-bottom: 6px; font-size: 1vw;" onclick="javascript:reset_handler()">Reset</button>
+              </div>
+            </div>
+          </div>
+        </div>
+          <div id="codemirror_box" style="border-top: 1px #ddd solid; border-bottom: 1px #ddd solid; border-left: 1px #ddd solid; border-right: 1px #ddd solid; width: 55vw; height: 70vh; top: 0; bottom: 0; left: 0; right: 0">
+          </div>
+        <script>
+          ace.require("ace/ext/language_tools");
+          var editor = ace.edit ("codemirror_box")
+          if (!window.localStorage.lastSavedCode)
+          {
+            editor.renderer.setShowGutter(false);
+            editor.renderer.scrollBarV.element.style ['display'] = "none"
+            editor.renderer.scrollBarH.element.style ['display'] = "none"
+          }
+          // editor.setOptions ({ enableBasicAutoCompletion: true});
+          editor.setTheme ("ace/theme/chrome")
+          editor.session.setMode("ace/mode/verilog")
+          editor.session.setTabSize(2)
+          document.getElementById('codemirror_box').style.fontSize='14px';
+          load_button = document.getElementById ("btn-load")
+          var load_btn_text = ""
+          if (window.localStorage.lastSavedCode)
+          {
+            editor.setValue (window.localStorage.lastSavedCode, -1);
+            load_btn_text = "Reload Code"
+          }
+          else
+          {
+            $.get("270sim_source.v", function(data) {
+              editor.setValue (data, -1);
+            });
+            load_btn_text = "Load Template"
+          }
+          editor.setShowPrintMargin(false);
+          var Range = ace.require('ace/range').Range;
+        </script>
+      </div>
+    </div>
+  </div>
+  <div class="align-items-center justify-content-center" id="overlay">
+    <div class="container justify-content-xl-center inner_overlay">
+      <div style="padding-top:30px;">
+        <div style="margin-top: -40px; width: calc(1vw + 1vh); float: right; cursor: pointer" onclick="javascript:closeOverlay(); closeSettings()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="color: white">
+            <path id="close1" style="fill: #888" d="M256 90c44.3 0 86 17.3 117.4 48.6C404.7 170 422 211.7 422 256s-17.3 86-48.6 117.4C342 404.7 300.3 422 256 422s-86-17.3-117.4-48.6C107.3 342 90 300.3 90 256s17.3-86 48.6-117.4C170 107.3 211.7 90 256 90m0-42C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48z"/>
+            <path id="close2" style="fill: #888" d="M360 330.9L330.9 360 256 285.1 181.1 360 152 330.9l74.9-74.9-74.9-74.9 29.1-29.1 74.9 74.9 74.9-74.9 29.1 29.1-74.9 74.9z"/>
+          </svg>
+        </div>
+      </div>
+      <h4 class="display-4 text-muted" style="filter: blur(0); font-size: 2vh">Double-click a project to open: </h4>
+      <div class="align-items-center" style="padding-left: 17%; padding-right: 20%; width: 100%; height: 100%">
+      <select name="project_list" multiple style="text-align: center; margin-top: 10px; width: calc(30vw + 2vh); height: 70%; font-size: 1.5vh"></select>
+        <div id="open_dialog_icon" style="padding-top: 0.8vh; width: calc(30vw + 2vh); height: 4vh">
+          <i class="fal fa-play " id="btnload" style="width: 1.5vh; margin-right: 15px; cursor: pointer" onclick="javascript:loadVerilog()"></i>
+          <i class="fal fa-times" id="btndel"  style="width: 1.5vh; margin-right: 15px; cursor: pointer" onclick="javascript:clearItem()"></i>
+          <i class="fal fa-trash" id="btntsh"  style="width: 1.5vh; margin-right: 15px; cursor: pointer" onclick="javascript:clearStorage()"></i>
+        </div>
+      </div>
+    </div>
+      <!-- </hr> -->
+    </div>
+  </div>
+  <div class="align-items-center justify-content-center" id="overlay_2">
+    <div class="container justify-content-center inner_overlay">
+      <div style="padding-top:2vh;">
+        <div style="width: 1.5vw; float: right; cursor: pointer" onclick="javascript:closeOverlay(); closeSettings()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="color: white">
+            <path id="close1" style="fill: #888" d="M256 90c44.3 0 86 17.3 117.4 48.6C404.7 170 422 211.7 422 256s-17.3 86-48.6 117.4C342 404.7 300.3 422 256 422s-86-17.3-117.4-48.6C107.3 342 90 300.3 90 256s17.3-86 48.6-117.4C170 107.3 211.7 90 256 90m0-42C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48z"/>
+            <path id="close2" style="fill: #888" d="M360 330.9L330.9 360 256 285.1 181.1 360 152 330.9l74.9-74.9-74.9-74.9 29.1-29.1 74.9 74.9 74.9-74.9 29.1 29.1-74.9 74.9z"/>
+          </svg>
+        </div>
+      </div>
+      <h4 class="display-4 text-muted" style="font-size: 2.5vh; padding-bottom: 10px">Settings</h4>
+      <div style="width: 100%; height: 4vh">
+        <h4 class="display-4 text-muted" id="ataraxia_username" style="text-align: left; font-size: 2vh; margin-top: 10px">Current User: unknown</h4>
+        <script>
+          $.get
+             (
+                window.location.href + "cgi-bin/userreq.cgi",
+                function (response)
+                {
+                  $('#ataraxia_username').html ('Current user: ' + response.replace ('\n', ''))
+                }
+             )
+        </script>
+      </div>
+      <div style="width: 100%; margin-top: 1px; height: 4vh">
+        <h4 class="display-4 text-muted" style="float: left; font-size: 2vh; margin-top: 10px">Dark Mode</h4>
+        <div style="float: right; width: 3.125vw; cursor: pointer">
+          <svg id="ice40HX8K" preserveAspectRatio="xMidYMid meet" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
+            <g>
+              <rect x="-1" y="-1" width="62" height="42" id="canvas_background_2" fill="#fff"/>
+              <g id="canvasGrid" display="none">
+                <rect id="svg_1" width="100%" height="100%" x="0" y="0" stroke-width="0" fill="url(#gridpattern)"/>
+              </g>
+            </g>
+            <g>
+              <rect onclick="javascript:toggleDarkMode()" id="settingsButtonOuter" fill="#fff" stroke-width="0.5" x="2.35782" y="3.97817" width="55.22964" height="31.60169" id="svg_2" rx="19" stroke="#000"/>
+              <ellipse onclick="javascript:toggleDarkMode()" id="settingsButtonInner" fill="#444" stroke-width="0.5" stroke-opacity="null" fill-opacity="null" cx="16.99961" cy="19.64636" id="svg_3" rx="12" ry="12.33765" stroke="#000"/>
+              <!-- <rect fill="#0aada5" stroke-width="0.5" x="23.64628" y="52.76076" width="55.22964" height="31.60169" id="svg_6" rx="19" stroke="#000"/>
+              <ellipse fill="#eee" stroke-width="0.5" stroke-opacity="null" fill-opacity="null" cx="64.53441" cy="68.42894" id="svg_7" rx="12" ry="12.33765" stroke="#000"/> -->
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div style="width: 100%; margin-top: 10px; height: 4vh; padding-bottom: 10px">
+        <h4 class="display-4 text-muted" style="margin-top: 2vh; margin-bottom: auto; float: left; height: 100%; font-size: 2vh;">LiveSim&trade;</h4>
+        <div style="width: 3.125vw; margin-top: auto; margin-bottom: auto; float: right; cursor: pointer; height: 100%">
+          <svg id="ice40HX8K" preserveAspectRatio="xMidYMid meet" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
+            <g>
+              <rect x="-1" y="-1" width="62" height="42" id="canvas_background_3" fill="#fff"/>
+              <g id="canvasGrid" display="none">
+                <rect id="svg_1" width="100%" height="100%" x="0" y="0" stroke-width="0" fill="url(#gridpattern)"/>
+              </g>
+            </g>
+            <g>
+              <rect onclick="javascript:toggleInstantSim()" id="settingsButtonOuter2" fill="#fff" stroke-width="0.5" x="2.35782" y="3.97817" width="55.22964" height="31.60169" id="svg_2" rx="19" stroke="#000"/>
+              <ellipse onclick="javascript:toggleInstantSim()" id="settingsButtonInner2" fill="#444" stroke-width="0.5" stroke-opacity="null" fill-opacity="null" cx="16.99961" cy="19.64636" id="svg_3" rx="12" ry="12.33765" stroke="#000"/>
+              <!-- <rect fill="#0aada5" stroke-width="0.5" x="23.64628" y="52.76076" width="55.22964" height="31.60169" id="svg_6" rx="19" stroke="#000"/>
+              <ellipse fill="#eee" stroke-width="0.5" stroke-opacity="null" fill-opacity="null" cx="64.53441" cy="68.42894" id="svg_7" rx="12" ry="12.33765" stroke="#000"/> -->
+            </g>
+          </svg>
+        </div>
+        <h4 class="display-4 text-muted" style="float: left; text-align: left; font-size: 1.5vh;">The Ctrl+S shortcut, when used inside the editor, will both save and simulate the code you've written. If you only want it to save, click the slider to disable it.</h4>
+      </div>
+      <div style="width: 100%; height: 4vh; float: left; margin-top: 15px; margin-bottom: 5px;">
+        <h4 class="display-4 text-muted" onclick="javascript:change_password()" style="color: #444; float: left; font-size: 2vh; margin-top: 10px; padding-bottom: 3px; cursor: pointer">Change your password</h4>
+        <div style="max-width: 150px; float: right">
+          <input id="passwd" type="password" style="text-align: left; border-radius: 8px; margin-top: 5px; padding-left: 10px; padding-right: 10px; height: 3.5vh; width: 6.5vw; font-size: 1.5vh">
+        </div>
+      </div>
+      <h4 class="display-4 text-muted" style="float: left; text-align: left; font-size: 1.5vh;">If you don't like your preassigned and very creative password, you can change it by entering a new one above and hitting Enter.</h4>
+      <div style="width: 100%; height: 7vh; margin-top: 0.5vh;">
+        <h4 class="display-4 text-muted" style="float: left; font-size: 2vh; margin-top: 10px; padding-bottom: 3px;">Change AutoSave interval</h4>
+        <div style="max-width: 125px; float: right">
+          <input id="autosave_interval" style="text-align: left; border-radius: 8px; margin-top: 5px; padding-left: 10px; padding-right: 10px; height: 3.5vh; width: 6.5vw; font-size: 1.5vh">
+        </div>
+        <h4 class="display-4 text-muted" style="float: left; text-align: left; font-size: 1.5vh; padding-bottom: 15px">Change the amount of time, in millseconds, elapsed between autosaves in the browser. Type in a value and hit Enter. (0-120000)</h4>
+      </div>
+      <div style="width: 100%; height: 7vh; float: left; margin-top: 0.5vh; margin-bottom: 5px;">
+        <h4 class="display-4 text-muted" style="float: left; font-size: 2vh;">Change Evaluation Board Theme</h4>
+        <div style="max-width: 100%; height: 5vh; float: right">
+          <select id="evalthemeselector" onchange="changeBoardTheme(document.getElementById ('evalthemeselector').value)" style="height: 3.5vh; width: 6.5vw;">
+            <option value="Modern">Modern</option>
+            <option value="Original">Original</option>
+            <!-- <option value="Dark Original">Dark Original</option> -->
+          </select>
+        </div>
+        <h4 class="display-4 text-muted" style="float: left; text-align: left; font-size: 1.5vh; padding-bottom: 15px">Do you also wonder, like Rick, why the simulator board is blue? Change the color scheme here!</h4>
+      </div>
+    </div>
+  </div>
+  </div>
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.6.1/pikaday.min.js"></script>
+  <script src="assets/js/simulator_backend.js"></script>
+  <!-- <script>openSettings();</script> -->
+  <script src="assets/js/theme.js"></script>
+</body>
+</html>

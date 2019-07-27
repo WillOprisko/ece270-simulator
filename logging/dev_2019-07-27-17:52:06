@@ -1,0 +1,16 @@
+[]
+Starting db5d6670b44a4042db5232bfbdcfdab15c068dbb4d9e8dbfb3577317b9f74cef
+Stopped db5d6670b44a4042db5232bfbdcfdab15c068dbb4d9e8dbfb3577317b9f74cef
+[]
+Starting 86608976d1cdbedfde5f909cb7d57e5cb704eff8138ecd54c77e17ab07ea0b99
+uncaughtException! Details: Error [ERR_STREAM_DESTROYED]: Cannot call write after a stream was destroyed
+    at doWrite (_stream_writable.js:411:19)
+    at writeOrBuffer (_stream_writable.js:399:5)
+    at Socket.Writable.write (_stream_writable.js:299:11)
+    at WebSocket.incoming (/home/menon18/nodejs_cvc/js_cvc_interface.js:249:78)
+    at WebSocket.emit (events.js:198:13)
+    at Receiver.receiverOnMessage (/home/menon18/nodejs_cvc/node_modules/ws/lib/websocket.js:800:20)
+    at Receiver.emit (events.js:198:13)
+    at Receiver.dataMessage (/home/menon18/nodejs_cvc/node_modules/ws/lib/receiver.js:422:14)
+    at Receiver.getData (/home/menon18/nodejs_cvc/node_modules/ws/lib/receiver.js:352:17)
+    at Receiver.startLoop (/home/menon18/nodejs_cvc/node_modules/ws/lib/receiver.js:138:22)

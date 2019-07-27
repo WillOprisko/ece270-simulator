@@ -137,10 +137,12 @@ wss.on
                         fs.mkdirSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client), (err) => {
                             if (err) { throw err; }
                           })
+                        fs.mkdirSync (path.resolve (process.cwd(), 'logging', ws.unique_client), (err) => {
+                            if (err) { throw err; }
+                          })
                         fs.writeFileSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'code.v'), ws.verilogCode, 'utf8', function (err) {
                             if (err) { throw err; }
-                        }
-                        )
+                        })
 
                         ws.send ("Processing Verilog code...")
                         cmd = 'cvc sim_modules/tb_ice40.sv tempcode/' + ws.unique_client + 
@@ -150,6 +152,7 @@ wss.on
                         status = ''
                         error = []
                         err_reg = /error|fatal|warning/i
+                        err_mod_rgx = /unresolved modules/i
                         try
                         {
                             ws.comStatus = child_process.execSync (cmd).toString() 
@@ -158,7 +161,19 @@ wss.on
                         {
                             ws.comStatus = ex.stdout.toString();
                         }
-                        ws.comStatus.split ('\n').forEach (function (element) { if (element.match (err_reg)) { error.push (element.match (err_reg).input) } })
+                        // ws.comStatus.split ('\n').forEach (function (element) { if (element.match (err_reg)) { error.push (element.match (err_reg).input) } })
+                        error_split = ws.comStatus.split ('\n')
+                        for (var i = 0; i < error_split.length; i++)
+                        {
+                            if (error_split [i].match (err_reg)) { 
+                                error.push (error_split [i].match (err_reg).input) 
+                            }
+                            else if (error_split [i].match (err_mod_rgx)) {
+                                code_split = ws.verilogCode.split ("\n")
+                                module_name = error_split [i + 1]
+                                code_split.forEach (function (el) { if (el.match (module_name)) { error.push ("**tempcode/randomfilereplacement007/code.v(" + (code_split.indexOf (el)).toString() + ") [CUSTOM_ERROR] This module does not exist!") } })
+                            }   
+                        }
 
                         if (error.length != '0')
                         {
@@ -166,7 +181,7 @@ wss.on
                             error.forEach (function (element) 
                                             { 
                                                 modded_err_rgx = /\*\*tempcode\/[a-z0-9]+\/code\.v\(([0-9]+)\)/
-                                                num = parseInt (element.match (modded_err_rgx) [1]) - 29
+                                                num = parseInt (element.match (modded_err_rgx) [1]) - (element.includes ("module does not exist") ? 28 : 29)
                                                 modded_err_msg = element.replace (modded_err_rgx, 'Line ' + num.toString() + ": ")
                                                 modded_err_msg = modded_err_msg.replace ("tempcode/" + ws.unique_client + '/code.v', 'your code ')
                                                 modded_error.push (modded_err_msg)
@@ -198,6 +213,12 @@ wss.on
                             // console.log (running_simulations.size())
                             ws.send ("Simulation successfully started!")
 
+                            fs.writeFileSync (path.resolve (process.cwd(), 'logging', ws.unique_client, 'cvclog'), "CVC HAS STARTED ::: \n ::: ::: ::: ::: ::: \n", 'utf8', function (err) {
+                                if (err) { throw err; }
+                            })
+
+                            ws.error_caught = false
+
                             running_simulations [ws.unique_client].stdout.on ('data', (indata) => {
                                 var data = indata.toString ('utf8').trim()
                                 try {
@@ -206,7 +227,11 @@ wss.on
                                     ws.send (msgdata)
                                 }
                                 catch {
-                                    // printTime (data)
+                                    ws.error_caught = true
+                                    console.log ("Error was found: " + data)
+                                    fs.appendFile (path.resolve (process.cwd(), 'logging', ws.unique_client, 'cvclog'), data, 'utf8', function (err) {
+                                        if (err) { throw err; }
+                                    })
                                 }
                             });
 
@@ -221,11 +246,18 @@ wss.on
                     case "SIMULATE":
                             if (message.includes ("END SIMULATION"))
                             {
-                                fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'code.v'));
-                                fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'fpga'));
-                                fs.rmdirSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client), (err) => {
-                                    if (err) { throw err; }
-                                  })
+                                if (!ws.error_caught)
+                                {
+                                    fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'code.v'));
+                                    fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'fpga'));
+                                    fs.rmdirSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client), (err) => {
+                                        if (err) { throw err; }
+                                      })
+                                    fs.unlinkSync (path.resolve (process.cwd(), 'logging', ws.unique_client, 'cvclog'));
+                                    fs.rmdirSync (path.resolve (process.cwd(), 'logging', ws.unique_client), (err) => {
+                                        if (err) { throw err; }
+                                    })
+                                }
                                 delete running_simulations [ws.unique_client]
                                 ws.close();
                             }
@@ -242,11 +274,18 @@ wss.on
                         {
                             if (running_simulations [ws.unique_client])
                             {
-                                fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'code.v'));
-                                fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'fpga'));
-                                fs.rmdirSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client), (err) => {
-                                    if (err) { throw err; }
-                                  })
+                                if (!ws.error_caught)
+                                {
+                                    fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'code.v'));
+                                    fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'fpga'));
+                                    fs.rmdirSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client), (err) => {
+                                        if (err) { throw err; }
+                                      })
+                                    fs.unlinkSync (path.resolve (process.cwd(), 'logging', ws.unique_client, 'cvclog'));
+                                    fs.rmdirSync (path.resolve (process.cwd(), 'logging', ws.unique_client), (err) => {
+                                        if (err) { throw err; }
+                                    })
+                                }
                                 console.log ("Stopped " + ws.unique_client)
                                 running_simulations [ws.unique_client].kill ('SIGTERM')
                                 delete running_simulations [ws.unique_client]
