@@ -1,16 +1,0 @@
-Outside regex OSS_CVC_7.00b-rhel6x of 07/07/14 (Linux-elf).
-Outside regex Copyright (c) 1991-2014 Tachyon Design Automation Corp.
-Outside regex   All Rights reserved.  Licensed software subject to prohibitions and
-Outside regex   restrictions.  See OSS CVC artistic license included with release.
-Outside regex Today is Sat Jul 27 18:08:47 2019.
-Outside regex Elaborating source file "sim_modules/tb_ice40.sv"
-Outside regex Elaborating source file "tempcode/bea642951f7497d751ce0576ccf685a5538f8bff92ab5e4864fe3dfdeca9eca8/code.v"
-Outside regex   DPI: all dpi_ import task/function routines found.
-Outside regex Highest level modules:
-Outside regex tb_ice40
-Outside regex **tempcode/bea642951f7497d751ce0576ccf685a5538f8bff92ab5e4864fe3dfdeca9eca8/code.v(118) WARN** [602] d0(ssdec) input port enable (line **tempcode/bea642951f7497d751ce0576ccf685a5538f8bff92ab5e4864fe3dfdeca9eca8/code.v(122)) width 1 mismatch with 1 width 32
-Outside regex   Compiling module 1 of 4.  Compiling module 2 of 4.  Compiling module 3 of 4.  Compiling module 4 of 4.
-Outside regex   CVC compilation 0.1 seconds elapsed.
-Outside regex End of OSS_CVC_7.00b-rhel6x at Sat Jul 27 18:08:47 2019 (elapsed 0.2 seconds).
-Outside regex 
-Starting bea642951f7497d751ce0576ccf685a5538f8bff92ab5e4864fe3dfdeca9eca8

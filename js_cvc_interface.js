@@ -226,12 +226,18 @@ wss.on
                                     JSON.parse (msgdata)
                                     ws.send (msgdata)
                                 }
-                                catch {
+                                catch (ex) {
                                     ws.error_caught = true
-                                    console.log ("Error was found: " + data)
-                                    fs.appendFile (path.resolve (process.cwd(), 'logging', ws.unique_client, 'cvclog'), data, 'utf8', function (err) {
-                                        if (err) { throw err; }
-                                    })
+                                    if (data.includes ("10 minutes exceeded"))
+                                    {  
+                                       ws.send ("TIME LIMIT EXCEEDED") 
+                                    }
+                                    else
+                                    {
+                                        fs.appendFile (path.resolve (process.cwd(), 'logging', ws.unique_client, 'cvclog'), data, 'utf8', function (err) {
+                                            if (err) { throw err; }
+                                        })
+                                    }
                                 }
                             });
 

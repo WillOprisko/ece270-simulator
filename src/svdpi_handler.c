@@ -131,7 +131,7 @@ void timer_watch (void)
 {
   time_t now;
         now = time (NULL);
-        if (now - start_time > 600)
+        if (now - start_time > 300)
         {
           char buffer [100];
           snprintf (buffer, 100, "\nTime limit of 10 minutes exceeded! Stopping simulation.\n");

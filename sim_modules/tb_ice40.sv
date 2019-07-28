@@ -6,89 +6,20 @@ module tb_ice40();
 ************************************/
 wire tb_i_hz100;
 wire [20:0] tb_i_pb;
-wire tb_o_ss7_0;
-wire tb_o_ss7_1;
-wire tb_o_ss7_2;
-wire tb_o_ss7_3;
-wire tb_o_ss7_4;
-wire tb_o_ss7_5;
-wire tb_o_ss7_6;
-wire tb_o_ss7_7;
-wire tb_o_ss6_0;
-wire tb_o_ss6_1;
-wire tb_o_ss6_2;
-wire tb_o_ss6_3;
-wire tb_o_ss6_4;
-wire tb_o_ss6_5;
-wire tb_o_ss6_6;
-wire tb_o_ss6_7;
-wire tb_o_ss5_0;
-wire tb_o_ss5_1;
-wire tb_o_ss5_2;
-wire tb_o_ss5_3;
-wire tb_o_ss5_4;
-wire tb_o_ss5_5;
-wire tb_o_ss5_6;
-wire tb_o_ss5_7;
-wire tb_o_ss4_0;
-wire tb_o_ss4_1;
-wire tb_o_ss4_2;
-wire tb_o_ss4_3;
-wire tb_o_ss4_4;
-wire tb_o_ss4_5;
-wire tb_o_ss4_6;
-wire tb_o_ss4_7;
-wire tb_o_ss3_0;
-wire tb_o_ss3_1;
-wire tb_o_ss3_2;
-wire tb_o_ss3_3;
-wire tb_o_ss3_4;
-wire tb_o_ss3_5;
-wire tb_o_ss3_6;
-wire tb_o_ss3_7;
-wire tb_o_ss2_0;
-wire tb_o_ss2_1;
-wire tb_o_ss2_2;
-wire tb_o_ss2_3;
-wire tb_o_ss2_4;
-wire tb_o_ss2_5;
-wire tb_o_ss2_6;
-wire tb_o_ss2_7;
-wire tb_o_ss1_0;
-wire tb_o_ss1_1;
-wire tb_o_ss1_2;
-wire tb_o_ss1_3;
-wire tb_o_ss1_4;
-wire tb_o_ss1_5;
-wire tb_o_ss1_6;
-wire tb_o_ss1_7;
-wire tb_o_ss0_0;
-wire tb_o_ss0_1;
-wire tb_o_ss0_2;
-wire tb_o_ss0_3;
-wire tb_o_ss0_4;
-wire tb_o_ss0_5;
-wire tb_o_ss0_6;
-wire tb_o_ss0_7;
-wire tb_o_left_0;
-wire tb_o_left_1;
-wire tb_o_left_2;
-wire tb_o_left_3;
-wire tb_o_left_4;
-wire tb_o_left_5;
-wire tb_o_left_6;
-wire tb_o_left_7;
-wire tb_o_right_0;
-wire tb_o_right_1;
-wire tb_o_right_2;
-wire tb_o_right_3;
-wire tb_o_right_4;
-wire tb_o_right_5;
-wire tb_o_right_6;
-wire tb_o_right_7;
-wire tb_o_red;
-wire tb_o_green;
-wire tb_o_blue;
+wire tb_o_ss7_0; wire tb_o_ss7_1; wire tb_o_ss7_2; wire tb_o_ss7_3; wire tb_o_ss7_4; wire tb_o_ss7_5; wire tb_o_ss7_6; wire tb_o_ss7_7; 
+wire tb_o_ss6_0; wire tb_o_ss6_1; wire tb_o_ss6_2; wire tb_o_ss6_3; wire tb_o_ss6_4; wire tb_o_ss6_5; wire tb_o_ss6_6; wire tb_o_ss6_7; 
+wire tb_o_ss5_0; wire tb_o_ss5_1; wire tb_o_ss5_2; wire tb_o_ss5_3; wire tb_o_ss5_4; wire tb_o_ss5_5; wire tb_o_ss5_6; wire tb_o_ss5_7; 
+wire tb_o_ss4_0; wire tb_o_ss4_1; wire tb_o_ss4_2; wire tb_o_ss4_3; wire tb_o_ss4_4; wire tb_o_ss4_5; wire tb_o_ss4_6; wire tb_o_ss4_7; 
+wire tb_o_ss3_0; wire tb_o_ss3_1; wire tb_o_ss3_2; wire tb_o_ss3_3; wire tb_o_ss3_4; wire tb_o_ss3_5; wire tb_o_ss3_6; wire tb_o_ss3_7; 
+wire tb_o_ss2_0; wire tb_o_ss2_1; wire tb_o_ss2_2; wire tb_o_ss2_3; wire tb_o_ss2_4; wire tb_o_ss2_5; wire tb_o_ss2_6; wire tb_o_ss2_7; 
+wire tb_o_ss1_0; wire tb_o_ss1_1; wire tb_o_ss1_2; wire tb_o_ss1_3; wire tb_o_ss1_4; wire tb_o_ss1_5; wire tb_o_ss1_6; wire tb_o_ss1_7; 
+wire tb_o_ss0_0; wire tb_o_ss0_1; wire tb_o_ss0_2; wire tb_o_ss0_3; wire tb_o_ss0_4; wire tb_o_ss0_5; wire tb_o_ss0_6; wire tb_o_ss0_7; 
+
+wire tb_o_left_0; wire tb_o_left_1; wire tb_o_left_2; wire tb_o_left_3; wire tb_o_left_4; wire tb_o_left_5; wire tb_o_left_6; wire tb_o_left_7;
+
+wire tb_o_right_0; wire tb_o_right_1; wire tb_o_right_2; wire tb_o_right_3; wire tb_o_right_4; wire tb_o_right_5; wire tb_o_right_6; wire tb_o_right_7;
+
+wire tb_o_red; wire tb_o_green; wire tb_o_blue;
 
 /***********************************
             myhdl reg's
@@ -108,7 +39,6 @@ reg [7:0] tb_o_right_reg;
 reg tb_o_red_reg;
 reg tb_o_green_reg;
 reg tb_o_blue_reg;
-
 
 /**********************************************************************
           Set up DPI connection and initial value for clock
