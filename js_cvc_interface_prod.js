@@ -181,18 +181,27 @@ wss.on
                             error.forEach (function (element) 
                                             { 
                                                 modded_err_rgx = /\*\*tempcode\/[a-z0-9]+\/code\.v\(([0-9]+)\)/
-                                                num = parseInt (element.match (modded_err_rgx) [1]) - (element.includes ("module does not exist") ? 28 : 29)
-                                                modded_err_msg = element.replace (modded_err_rgx, 'Line ' + num.toString() + ": ")
-                                                modded_err_msg = modded_err_msg.replace ("tempcode/" + ws.unique_client + '/code.v', 'your code ')
-                                                modded_error.push (modded_err_msg)
+                                                try {
+                                                    num = parseInt (element.match (modded_err_rgx) [1]) - (element.includes ("module does not exist") ? 28 : 29)
+                                                    modded_err_msg = element.replace (modded_err_rgx, 'Line ' + num.toString() + ": ")
+                                                    modded_err_msg = modded_err_msg.replace ("tempcode/" + ws.unique_client + '/code.v', 'your code ')
+                                                    modded_error.push (modded_err_msg)
+                                                }
+                                                catch (ex) {
+                                                    console.log ("Cannot parse this error: " + element)
+                                                    num = -1
+                                                }
                                             }
                                           )
-                            fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'code.v'));
-                            fs.rmdir (path.resolve (process.cwd(), 'tempcode', ws.unique_client), (err) => {
-                                if (err) { throw err; }
-                            })
-                            ws.send ("Compilation failed with the following error:\2" + modded_error.join ('\2'))
-                            ws.close()
+                            if (modded_error.length != '0')
+                            {
+                                fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'code.v'));
+                                fs.rmdir (path.resolve (process.cwd(), 'tempcode', ws.unique_client), (err) => {
+                                    if (err) { throw err; }
+                                })
+                                ws.send ("Compilation failed with the following error:\2" + modded_error.join ('\2'))
+                                ws.close()
+                            }
                         }
                         else
                         {
@@ -213,7 +222,7 @@ wss.on
                             // console.log (running_simulations.size())
                             ws.send ("Simulation successfully started!")
 
-                            fs.writeFileSync (path.resolve (process.cwd(), 'logging', ws.unique_client, 'cvclog'), "CVC HAS STARTED ::: \n ::: ::: ::: ::: ::: \n", 'utf8', function (err) {
+                            fs.writeFileSync (path.resolve (process.cwd(), 'logging', ws.unique_client, 'cvclog'), "CVC HAS STARTED ::: \n", 'utf8', function (err) {
                                 if (err) { throw err; }
                             })
 
@@ -227,13 +236,13 @@ wss.on
                                     ws.send (msgdata)
                                 }
                                 catch (ex) {
-                                    ws.error_caught = true
                                     if (data.includes ("10 minutes exceeded"))
                                     {  
                                        ws.send ("TIME LIMIT EXCEEDED") 
                                     }
                                     else
                                     {
+                                        ws.error_caught = true
                                         fs.appendFile (path.resolve (process.cwd(), 'logging', ws.unique_client, 'cvclog'), data, 'utf8', function (err) {
                                             if (err) { throw err; }
                                         })
