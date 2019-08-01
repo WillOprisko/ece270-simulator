@@ -1,3 +1,7 @@
 verilog.log
 tempcode/
 logging/
+serverreboot
+logcleanup.sh
+sourcelogs
+test.html
