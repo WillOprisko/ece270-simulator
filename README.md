@@ -30,6 +30,7 @@ The site is intended to provide a virtual interface to a modern FPGA to allow st
 Fair warning: This local version is only meant to be run by users familiar with UNIX operations and debugging code issues. 
 If you are not familiar with what that means, this may not be the option for you. Having a setup-everything script for beginners
 is not currently on the agenda at the moment.
+
 ---
 #### From scratch:
 
