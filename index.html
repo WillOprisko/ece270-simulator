@@ -412,17 +412,7 @@
       </div>
       <h4 class="display-4 text-muted" style="font-size: 2.5vh; padding-bottom: 10px">Settings</h4>
       <div style="width: 100%; height: 4vh">
-        <h4 class="display-4 text-muted" id="ataraxia_username" style="text-align: left; font-size: 2vh; margin-top: 10px">Current User: unknown</h4>
-        <script>
-          $.get
-             (
-                window.location.href + "cgi-bin/userreq.cgi",
-                function (response)
-                {
-                  $('#ataraxia_username').html ('Current user: ' + response.replace ('\n', ''))
-                }
-             )
-        </script>
+        <h4 class="display-4 text-muted" id="ataraxia_username" style="text-align: left; font-size: 2vh; margin-top: 10px">Current User: localhost</h4>
       </div>
       <div style="width: 100%; margin-top: 1px; height: 4vh">
         <h4 class="display-4 text-muted" style="float: left; font-size: 2vh; margin-top: 10px">Dark Mode</h4>
