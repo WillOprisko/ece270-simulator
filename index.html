@@ -5,13 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
   <title>ice40HX8K Simulator</title>
   <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700">
   <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Amiko">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bitter:400,700">
   <link rel="stylesheet" href="assets/css/Features-Clean.css">
   <link rel="stylesheet" href="assets/css/Header-Dark.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.6.1/css/pikaday.min.css">
   <link rel="stylesheet" href="assets/css/untitled.css">
   <link rel="stylesheet" href="assets/fontawesome/css/all.css">
   <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
@@ -21,19 +17,13 @@
     font-family: 'Courier';
     font-style: normal;
     font-weight: 400;
-    src: local('Courier Std Medium'), local('CourierStd'), url("https://fonts.gstatic.com/l/font?kit=i7dKIFtyYSaNG9A_JrmedQ&skey=415f62b718dd1a36&v=v2") format('woff2');
+    src: local('Courier Std Medium'), local('CourierStd'), url("assets/fonts/Courier.woff2") format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
   }
   </style>
-  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplebar/4.0.0/simplebar.css"> -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.4/ace.js"></script>
+  <script src="assets/js/ace.js"></script>
+  <script src="assets/js/jquery-3.4.1.min.js"></script>
   <script src="assets/fontawesome/js/all.js"></script>
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/simplebar/4.0.0/simplebar.js"></script> -->
-  <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.6.8-fix/jquery.nicescroll.min.js"></script> -->
-  <!-- <script src="assets/js/jquery.nicescroll.js"></script> -->
-  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css"> -->
-  <!-- <script src="https://use.fontawesome.com/0f1418d9c7.js"></script> -->
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 </head>
 
@@ -109,7 +99,7 @@
     <div class="row justify-content-center">
       <div class="row text-center d-sm-flex d-xl-flex justify-content-center" style="text-align: center; width: 100%">
         <div class="col-md-6" style="max-width: calc(15vw + 20vh); padding-right: 1px">
-          <svg id="ice40HX8K" preserveAspectRatio="xMidYMid meet" viewBox="0 0 650 690" xmlns="http://www.w3.org/2000/svg">
+          <svg id="ice40HX8K" preserveAspectRatio="xMidYMid meet" viewBox="0 0 650 690">
             <defs>
               <filter id="svg_127_blur" x="-50%" y="-50%" width="200%" height="200%">
                 <feGaussianBlur stdDeviation="0"/>
@@ -121,7 +111,7 @@
                 <rect id="svg_2" width="100%" height="100%" x="0" y="0" stroke-width="0" fill="url(#gridpattern)"/>
               </g>
             </g>
-            <g xmlns="http://www.w3.org/2000/svg">
+            <g>
               <rect fill="#111" stroke-width="1.5" x="14.997626" y="49.661171" width="52.941165" height="106.372523" id="svg_1" stroke="#000" opacity="0.5"></rect>
               <ellipse class="ss7_line" fill="#222" stroke="#333" stroke-width="3" stroke-opacity="null" fill-opacity="null" filter="url(#svg_127_blur)" ry="2" rx="2"  cy="145.50805" cx="60.80111" id="ss7_dp"/>
               <line class="ss7_line" fill="#222" stroke="#333" stroke-width="4" stroke-opacity="null" fill-opacity="null" x1="24.845323" y1="104.305744" x2="57.531162" y2="104.305744" id="ss7_g" stroke-linejoin="bevel" stroke-linecap="round" ></line>
@@ -391,7 +381,7 @@
     <div class="container justify-content-xl-center inner_overlay">
       <div style="padding-top:30px;">
         <div style="margin-top: -40px; width: calc(1vw + 1vh); float: right; cursor: pointer" onclick="javascript:closeOverlay(); closeSettings()">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="color: white">
+          <svg viewBox="0 0 512 512" style="color: white">
             <path id="close1" style="fill: #888" d="M256 90c44.3 0 86 17.3 117.4 48.6C404.7 170 422 211.7 422 256s-17.3 86-48.6 117.4C342 404.7 300.3 422 256 422s-86-17.3-117.4-48.6C107.3 342 90 300.3 90 256s17.3-86 48.6-117.4C170 107.3 211.7 90 256 90m0-42C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48z"/>
             <path id="close2" style="fill: #888" d="M360 330.9L330.9 360 256 285.1 181.1 360 152 330.9l74.9-74.9-74.9-74.9 29.1-29.1 74.9 74.9 74.9-74.9 29.1 29.1-74.9 74.9z"/>
           </svg>
@@ -414,7 +404,7 @@
     <div class="container justify-content-center inner_overlay">
       <div style="padding-top:2vh;">
         <div style="width: 1.5vw; float: right; cursor: pointer" onclick="javascript:closeOverlay(); closeSettings()">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="color: white">
+          <svg viewBox="0 0 512 512" style="color: white">
             <path id="close1" style="fill: #888" d="M256 90c44.3 0 86 17.3 117.4 48.6C404.7 170 422 211.7 422 256s-17.3 86-48.6 117.4C342 404.7 300.3 422 256 422s-86-17.3-117.4-48.6C107.3 342 90 300.3 90 256s17.3-86 48.6-117.4C170 107.3 211.7 90 256 90m0-42C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48z"/>
             <path id="close2" style="fill: #888" d="M360 330.9L330.9 360 256 285.1 181.1 360 152 330.9l74.9-74.9-74.9-74.9 29.1-29.1 74.9 74.9 74.9-74.9 29.1 29.1-74.9 74.9z"/>
           </svg>
@@ -437,7 +427,7 @@
       <div style="width: 100%; margin-top: 1px; height: 4vh">
         <h4 class="display-4 text-muted" style="float: left; font-size: 2vh; margin-top: 10px">Dark Mode</h4>
         <div style="float: right; width: 3.125vw; cursor: pointer">
-          <svg id="ice40HX8K" preserveAspectRatio="xMidYMid meet" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
+          <svg id="ice40HX8K" preserveAspectRatio="xMidYMid meet" viewBox="0 0 60 40" >
             <g>
               <rect x="-1" y="-1" width="62" height="42" id="canvas_background_2" fill="#fff"/>
               <g id="canvasGrid" display="none">
@@ -456,7 +446,7 @@
       <div style="width: 100%; margin-top: 10px; height: 4vh; padding-bottom: 10px">
         <h4 class="display-4 text-muted" style="margin-top: 2vh; margin-bottom: auto; float: left; height: 100%; font-size: 2vh;">LiveSim&trade;</h4>
         <div style="width: 3.125vw; margin-top: auto; margin-bottom: auto; float: right; cursor: pointer; height: 100%">
-          <svg id="ice40HX8K" preserveAspectRatio="xMidYMid meet" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
+          <svg id="ice40HX8K" preserveAspectRatio="xMidYMid meet" viewBox="0 0 60 40" >
             <g>
               <rect x="-1" y="-1" width="62" height="42" id="canvas_background_3" fill="#fff"/>
               <g id="canvasGrid" display="none">
@@ -503,7 +493,6 @@
   </div>
   <script src="assets/js/jquery.min.js"></script>
   <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.6.1/pikaday.min.js"></script>
   <script src="assets/js/simulator_backend.js"></script>
   <!-- <script>openSettings();</script> -->
   <script src="assets/js/theme.js"></script>

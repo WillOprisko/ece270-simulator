@@ -21,6 +21,8 @@ var darkModeTheme  = {"STATUS_READY" : "#444",
                             "SERVER_DOWN" : "#533",
                             "DEMO_RUNNING" : "#353"}
 
+var pending = null;
+
 CURRENT_STATUS = ["STATUS_READY", "Status: Ready"]
 
 var darkModeSetting = localStorage.ice40DarkMode == "false" ? true : false;
@@ -480,7 +482,7 @@ function ice40hx8k_handler ()
       {
         update_status ("SERVER_DOWN", "Status: Server is down")
       }
-      setTimeout (function () { update_status ("STATUS_READY", "Status: Ready") }, 1000);
+      this.pending = setTimeout (function () { update_status ("STATUS_READY", "Status: Ready") }, 1000);
     }
   }
   return false
@@ -561,10 +563,10 @@ function display_info (sect)
     late nights in lab working on the physical board. "
     break;
     case 1:
-    p_elm.innerHTML = "When you click Simulate or Demo, you're sending a message back to Ataraxia, the server, where a Python script receives the code (or demo request),\
-    and processes it. If there are errors, it reports them back to you, and quits. If not, it sets up an <a href='https://iverilog.fandom.com/wiki/Icarus_Verilog:About'>IcarusVerilog </a> simulation\
-    with the help of a module called <a href='https://github.com/myhdl/myhdl/'>myHDL</a> using the code you sent, and waits for either you to send inputs, or the outputs to start changing.\
-    Side note: The Ace code editor you're using has some pretty great shortcuts. Check them out <a href='https://github.com/ajaxorg/ace/wiki/Default-Keyboard-Shortcuts'>here.</a>"
+    p_elm.innerHTML = "When you click Simulate or Demo, you're sending a message back to the server, where a running node.js WebSocket server receives the code (or demo request),\
+    and processes it. If there are errors, it reports them back to you, and quits. If not, it sets up a <a href='http://www.tachyon-da.com/what-is-cvc/'>CVC</a> simulation\
+    using the code you sent, and waits for either you to send inputs, or the outputs to start changing. Side note: The Ace code editor you're using has some pretty great shortcuts.\
+    Check them out <a href='https://github.com/ajaxorg/ace/wiki/Default-Keyboard-Shortcuts'>here.</a>"
     break;
     case 2:
     p_elm.innerHTML = "Enter your code in the editor below. Ensure that you include the top module and that its name is top. \
@@ -649,7 +651,7 @@ function stop_handler ()
     {
       update_status ("STATUS_READY", "Status: Ready")
     }
-    setTimeout (callback_1, 1100)
+    this.pending = setTimeout (callback_1, 1100)
     // alert ("Simulation has been stopped.")
   }
 }
@@ -666,7 +668,7 @@ function reset_handler ()
     {
       update_status ("STATUS_READY", "Status: Ready")
     }
-    setTimeout (callback_1, 1100)
+    this.pending = setTimeout (callback_1, 1100)
   }
   editor.getSession().clearAnnotations()
   for (var id in error_id)
@@ -739,7 +741,7 @@ function demo_handler ()
       console.log (evt.code)
       update_status ("SERVER_DOWN", "Status: Server is down")
     }
-    setTimeout (function () { update_status ("STATUS_READY", "Status: Ready") }, 1000);
+    this.pending = setTimeout (function () { update_status ("STATUS_READY", "Status: Ready") }, 1000);
   }
   update_status ("DEMO_RUNNING", "Status: Running demo simulation")
   return false
@@ -747,6 +749,7 @@ function demo_handler ()
 
 function update_status (color, message)
 {
+  clearTimeout (pending)
   CURRENT_STATUS = [color, message]
   if (localStorage.ice40DarkMode == "true")
   {
@@ -1264,17 +1267,16 @@ load_button.innerHTML = load_btn_text
 
 toggleDarkMode()
 
-//if (!window.localStorage.evalboardtheme)
-//{
-//  alert ("Extremely unnecessary theming feature added in Settings for those of you who'd like to see a different look on the board!")
-//  document.getElementById ("evalthemeselector").value = "Modern"
-//  window.localStorage.evalboardtheme = "Modern"
-//}
-//else
-//{
-//  changeBoardTheme (window.localStorage.evalboardtheme)
-//  document.getElementById ("evalthemeselector").value = window.localStorage.evalboardtheme
-//}
+if (!window.localStorage.evalboardtheme)
+{
+ document.getElementById ("evalthemeselector").value = "Modern"
+ window.localStorage.evalboardtheme = "Modern"
+}
+else
+{
+ changeBoardTheme (window.localStorage.evalboardtheme)
+ document.getElementById ("evalthemeselector").value = window.localStorage.evalboardtheme
+}
 
 //if (!window.localStorage.announcement18JUL3)
 //{

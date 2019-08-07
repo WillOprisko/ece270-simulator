@@ -22,7 +22,7 @@ wire tb_o_right_0; wire tb_o_right_1; wire tb_o_right_2; wire tb_o_right_3; wire
 wire tb_o_red; wire tb_o_green; wire tb_o_blue;
 
 /***********************************
-            myhdl reg's
+            CVC reg's
 ************************************/
 reg tb_i_hz100_reg;
 reg [20:0] tb_i_pb_reg;

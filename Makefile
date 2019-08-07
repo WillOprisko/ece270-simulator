@@ -28,5 +28,11 @@ run: svdpi
 compile: 
 	$(CVC) $(OBJPATH)tb_ice40.sv $(FILEPATH)example.v -sv_lib $(OBJPATH)svdpi.so -o fpga
 
+synthesize:
+	yosys -p "synth_ice40 -top top -blif temp.blif" lab13.v
+	yosys -o struct_lab13.v temp.blif
+	rm -f temp.blif
+	cvc +interp tb_struct_lab13.sv struct_lab13.v /usr/local/bin/../share/yosys/ice40/cells_sim.v /usr/local/bin/../share/yosys/ice40/cells_map.v -sv_lib sim_modules/svdpi.so
+
 clean:
 	rm -rf *.o *.so

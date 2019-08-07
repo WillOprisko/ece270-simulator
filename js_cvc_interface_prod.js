@@ -91,7 +91,7 @@ wss.on
                         }
                         else if (!code.match (/(module top ?[^\n]+)/))
                         {
-                            ws.send ("Compilation failed with the following error:\2Line 1: Please enter some Verilog to test!")
+                            ws.send ("Compilation failed with the following error:\2Line 1: This does not look like Verilog!")
                             ws.close()
                         }
                         else
@@ -145,6 +145,20 @@ wss.on
                         })
 
                         ws.send ("Processing Verilog code...")
+                        // yosys_out = cp.execSync ('yosys -Q -T -q -p "synth_ice40 -top top -blif temp.blif" lab13.v 2>&1').toString()
+
+                        // error.push ()
+                        // for (var elm in yosys_out)
+                        //  {
+                        //     elm = yosys_out [elm]
+                        //     if (!elm.includes ("is used but has no driver") && elm.includes ('Warning'))
+                        //     {
+                        //         newelm = elm.replace ("Warning", "Error")
+                        //         lineno = parseInt (newelm.match (/ at lab13\.v\:([0-9]+)/)[1])
+                        //         newelm = 'Line ' + lineno.toString() + ': ' + newelm.replace (/ at lab13\.v\:([0-9]+)/, '').replace ('Error: ', '')
+                        //         console.log (newelm)
+                        //     }
+                        // }
                         cmd = 'cvc sim_modules/tb_ice40.sv tempcode/' + ws.unique_client + 
                               '/code.v -sv_lib sim_modules/svdpi.so -o tempcode/' + 
                               ws.unique_client + '/fpga'
@@ -159,7 +173,10 @@ wss.on
                         }
                         catch (ex)
                         {
-                            ws.comStatus = ex.stdout.toString();
+                            if (ex.stdout)
+                            {
+                                ws.comStatus = ex.stdout.toString();
+                            }
                         }
                         // ws.comStatus.split ('\n').forEach (function (element) { if (element.match (err_reg)) { error.push (element.match (err_reg).input) } })
                         error_split = ws.comStatus.split ('\n')
@@ -205,11 +222,25 @@ wss.on
                         }
                         else
                         {
+                            // Introduced Yosys-produced gate-level synthesis approach
                             ws.currentState = "SIMULATE"
-                            console.log ("Starting " + ws.unique_client)
-                            var args = ('+interp sim_modules/tb_ice40.sv tempcode/' + ws.unique_client + '/code.v -sv_lib sim_modules/svdpi.so').split (" ")
                             var cp = require('child_process');
                             var env = Object.create( process.env );
+
+                            cp.execSync ('yosys -Q -T -q -p "synth_ice40 -top top -blif tempcode/' + ws.unique_client + '/temp.blif" tempcode/' + ws.unique_client + '/code.v 2>&1')
+                            cp.execSync ('yosys -o tempcode/' + ws.unique_client + '/struct_code.v tempcode/' + ws.unique_client + 'temp.blif')
+
+                            console.log ("Starting " + ws.unique_client)
+                            var args = ('+interp sim_modules/tb_struct_ice40.sv ' +
+                                         '/usr/local/bin/../share/yosys/ice40/cells_sim.v ' +
+                                         '/usr/local/bin/../share/yosys/ice40/cells_map.v ' +
+                                         'tempcode/' + ws.unique_client + '/struct_code.v -sv_lib sim_modules/svdpi.so').split (" ")
+
+                            // ws.currentState = "SIMULATE"
+                            // console.log ("Starting " + ws.unique_client)
+                            // var args = ('+interp sim_modules/tb_ice40.sv tempcode/' + ws.unique_client + '/code.v -sv_lib sim_modules/svdpi.so').split (" ")
+                            // var cp = require('child_process');
+                            // var env = Object.create( process.env );
 
                             env.SVDPI_TO_PIPE='1';
                             env.SVDPI_FROM_PIPE='0';
@@ -264,6 +295,8 @@ wss.on
                                 if (!ws.error_caught)
                                 {
                                     fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'code.v'));
+                                    fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'struct_code.v'));
+                                    // fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'temp.blif'));
                                     fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'fpga'));
                                     fs.rmdirSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client), (err) => {
                                         if (err) { throw err; }
@@ -292,6 +325,8 @@ wss.on
                                 if (!ws.error_caught)
                                 {
                                     fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'code.v'));
+                                    fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'struct_code.v'));
+                                    // fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'temp.blif'));
                                     fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'fpga'));
                                     fs.rmdirSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client), (err) => {
                                         if (err) { throw err; }

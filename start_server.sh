@@ -5,7 +5,6 @@ then
     echo "No args provided: main or dev?"
     echo "Usage: "
     echo "start_server [main|dev]"
-    exit 0
 else
     cd ~/nodejs_cvc
     time="$(date "+%F-%T")"
