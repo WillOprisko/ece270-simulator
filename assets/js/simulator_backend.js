@@ -368,7 +368,7 @@ function set_outputs (json_out)
 // Testing function
 // function ice40hx8k_handler ()
 // {
-//     ws = new WebSocket ("ws://" + window.location.hostname + "/wss")
+//     ws = new WebSocket ("ws://" + window.location.hostname + "/270sim/wss")
 //     ws.onmessage = function (event)
 //     {
 //         console.log (event.data)
@@ -404,7 +404,7 @@ function ice40hx8k_handler ()
     set_outputs (JSON.parse ('{"LFTRED": 0, "RGTRED": 0, "RGBLED": 0, "SS7": 0, "SS6": 0, \
     "SS5": 0, "SS4": 0, "SS3": 0, "SS2": 0, "SS1": 0, "SS0": 0}'))
   }
-  ws = new WebSocket("ws://" + window.location.hostname + "/wss")
+  ws = new WebSocket("ws://" + window.location.hostname + "/270sim/wss")
   var messages = ""
   ws.onmessage = function (event)
   {
@@ -692,7 +692,7 @@ function demo_handler ()
     "SS5": 0, "SS4": 0, "SS3": 0, "SS2": 0, "SS1": 0, "SS0": 0}'))
   }
 
-  ws = new WebSocket("ws://" + window.location.hostname + "/wss")
+  ws = new WebSocket("ws://" + window.location.hostname + "/270sim/wss")
   ws.onmessage = function (event)
   {
     if (event.data == "Processing Verilog code...")
