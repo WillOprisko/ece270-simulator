@@ -45,7 +45,7 @@ Ubuntu distro, otherwise the name of the distro you installed) and let it open u
 
       ```bash
         sudo apt update
-        sudo apt install -y build-essential nodejs npm gcc-multilib lib32z1-dev clang bison flex\
+        sudo apt install -y build-essential nodejs gcc-multilib lib32z1-dev clang bison flex\
 	                        libreadline-dev gawk tcl-dev libffi-dev git graphviz xdot pkg-config\
 	                        python3 libboost-system-dev libboost-python-dev libboost-filesystem-dev\
                             zlib1g-dev apache2 yosys
