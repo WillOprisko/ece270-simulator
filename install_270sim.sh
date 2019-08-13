@@ -34,9 +34,6 @@ source ~/.bashrc
 # Set up simulator directory as webpage
 sudo ln -s ~/270sim /var/www/html/270sim
 cd /var/www/html/270sim
-find . -type f -exec chmod +x {} \;
-find . -type f -exec chmod o+x {} \;
-find . -type f -exec chmod o+r {} \;
 
 # Enable WebSocket routing
 sudo a2enmod proxy_wstunnel
