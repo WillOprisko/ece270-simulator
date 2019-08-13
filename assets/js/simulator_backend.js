@@ -1286,3 +1286,4 @@ else
 
 // console.clear()
 console.log ("%c\n\n\nFellow DigiJocks and DigiJockettes, thanks for checking out the code!\n\n\nThe main JS functions lie in assets/js/simulator_backend.js.\n\n\n", "background: #eeeeee; color: black; font-size: medium")
+

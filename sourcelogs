@@ -1,2 +1,2 @@
-alias nanomainlog="nano ~/nodejs_cvc/logging/main_2019-08-07-02:33:20"
-alias tailmainlog="tail -f ~/nodejs_cvc/logging/main_2019-08-07-02:33:20"
+alias nanomainlog="nano ~/270sim/logging/main_2019-08-13-16:34:14"
+alias tailmainlog="tail -f ~/270sim/logging/main_2019-08-13-16:34:14"

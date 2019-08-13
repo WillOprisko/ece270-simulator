@@ -1,5 +1,5 @@
 const fs = require('fs');
-const child_process = require('child_process');
+const cp = require('child_process');
 const crypto = require('crypto');
 const path = require('path');
 
@@ -21,6 +21,60 @@ function exitHandler (options, exitCode) {
     if (options.exit) process.exit()
 }
 
+/*****************************************************/
+
+/* 
+    https://stackoverflow.com/questions/18052762/remove-directory-which-is-not-empty
+*/
+
+function deleteFile(dir, file) {
+    return new Promise(function (resolve, reject) {
+        var filePath = path.join(dir, file);
+        fs.lstat(filePath, function (err, stats) {
+            if (err) {
+                return reject(err);
+            }
+            if (stats.isDirectory()) {
+                resolve(deleteDirectory(filePath));
+            } else {
+                fs.unlink(filePath, function (err) {
+                    if (err) {
+                        return reject(err);
+                    }
+                    resolve();
+                });
+            }
+        });
+    });
+};
+
+function deleteDirectory(dir) {
+    return new Promise(function (resolve, reject) {
+        fs.access(dir, function (err) {
+            if (err) {
+                return reject(err);
+            }
+            fs.readdir(dir, function (err, files) {
+                if (err) {
+                    return reject(err);
+                }
+                Promise.all(files.map(function (file) {
+                    return deleteFile(dir, file);
+                })).then(function () {
+                    fs.rmdir(dir, function (err) {
+                        if (err) {
+                            return reject(err);
+                        }
+                        resolve();
+                    });
+                }).catch(reject);
+            });
+        });
+    });
+};
+
+/*****************************************************/
+
 process.on ('SIGINT', exitHandler.bind (null, {exit: true}))
 process.on ('uncaughtException', function (err) {
     console.log ('uncaughtException! Details: ' + err.stack)
@@ -30,6 +84,18 @@ String.prototype.replaceAll = function(search, replacement) {
   var target = this;
   return target.replace(new RegExp(search, 'g'), replacement);
 };
+
+Array.prototype.indexOfReg = function (search) {
+     var arr = this
+     for (var elm in arr) {
+        if (arr [elm].match (search)) {
+            d = new Object();
+            d.message = arr [elm]
+            d.lineno = arr.indexOf (arr [elm])
+            return d
+        }
+    }
+}
 
 /*                                Expected Operation                          */
 /*******************************************************************************
@@ -145,20 +211,7 @@ wss.on
                         })
 
                         ws.send ("Processing Verilog code...")
-                        // yosys_out = cp.execSync ('yosys -Q -T -q -p "synth_ice40 -top top -blif temp.blif" lab13.v 2>&1').toString()
 
-                        // error.push ()
-                        // for (var elm in yosys_out)
-                        //  {
-                        //     elm = yosys_out [elm]
-                        //     if (!elm.includes ("is used but has no driver") && elm.includes ('Warning'))
-                        //     {
-                        //         newelm = elm.replace ("Warning", "Error")
-                        //         lineno = parseInt (newelm.match (/ at lab13\.v\:([0-9]+)/)[1])
-                        //         newelm = 'Line ' + lineno.toString() + ': ' + newelm.replace (/ at lab13\.v\:([0-9]+)/, '').replace ('Error: ', '')
-                        //         console.log (newelm)
-                        //     }
-                        // }
                         cmd = 'cvc sim_modules/tb_ice40.sv tempcode/' + ws.unique_client + 
                               '/code.v -sv_lib sim_modules/svdpi.so -o tempcode/' + 
                               ws.unique_client + '/fpga'
@@ -169,27 +222,65 @@ wss.on
                         err_mod_rgx = /unresolved modules/i
                         try
                         {
-                            ws.comStatus = child_process.execSync (cmd).toString() 
+                            ws.comStatus = cp.execSync (cmd).toString() 
                         }
                         catch (ex)
                         {
                             if (ex.stdout)
                             {
                                 ws.comStatus = ex.stdout.toString();
+                                error_split = ws.comStatus.split ('\n')
+                                for (var i = 0; i < error_split.length; i++)
+                                {
+                                    if (error_split [i].match (err_reg)) { 
+                                        error.push (error_split [i].match (err_reg).input) 
+                                    }
+                                    else if (error_split [i].match (err_mod_rgx)) {
+                                        code_split = ws.verilogCode.split ("\n")
+                                        module_name = error_split [i + 1]
+                                        code_split.forEach (function (el) { if (el.match (module_name)) { error.push ("**tempcode/randomfilereplacement007/code.v(" + (code_split.indexOf (el)).toString() + ") [CUSTOM_ERROR] This module does not exist!") } })
+                                    }   
+                                }
                             }
                         }
                         // ws.comStatus.split ('\n').forEach (function (element) { if (element.match (err_reg)) { error.push (element.match (err_reg).input) } })
-                        error_split = ws.comStatus.split ('\n')
-                        for (var i = 0; i < error_split.length; i++)
-                        {
-                            if (error_split [i].match (err_reg)) { 
-                                error.push (error_split [i].match (err_reg).input) 
+
+                        try {
+                            yosys_out = cp.execSync ('/home/menon18/yosys-yosys-0.8/yosys -p "synth_ice40 -top top -blif tempcode/' 
+                                                     + ws.unique_client + '/temp.blif; delete top; read_blif tempcode/' + ws.unique_client + 
+                                                     '/temp.blif; write_verilog tempcode/' + ws.unique_client + '/struct_code.v" tempcode/' 
+                                                     + ws.unique_client + '/code.v -l tempcode/' + ws.unique_client + '/yosyslog')
+                            fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'yosyslog'))
+                            ws.initYosys = true
+                        }
+                        catch (ex) {
+                            yosys_out = fs.readFileSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'yosyslog'))
+                            fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'yosyslog'))
+                            ws.initYosys = false
+
+                            logarray = yosys_out.toString().split ("\n")
+                            if (logarray.indexOfReg (/Error/i).message.match (ws.unique_client))    // Is a syntax error
+                            {
+                                related_error = logarray.indexOfReg (/Error/i).message
+                                
+                            } else  // Is a mapping error
+                            {
+                                skippable_error_regex = /is not part of the design/i
+                                if (!logarray.indexOfReg (/Error/i).message.match (skippable_error_regex))
+                                {
+                                    related_error = logarray [logarray.indexOfReg (/Error/i).lineno - 1]
+                                    codeline = parseInt (related_error.match (/code\.v\:([0-9]+)/i)[1])
+                                    if (logarray [logarray.indexOfReg (/Error/i).lineno].match (/Multiple edge sensitive/i))
+                                    {
+                                        error.push ('**tempcode/randomfilereplacement007/code.v(' + codeline + ") [SYNTHESIS_ERROR] No reset logic for attempted flip flop found.")
+                                    }
+                                    else
+                                    {
+                                        error.push ('**tempcode/randomfilereplacement007/code.v(' + codeline + ") [SYNTHESIS_ERROR] " + 
+                                                        logarray [logarray.indexOfReg (/Error/i).lineno].replace ('ERROR: ', ''))
+                                    }
+                                }
                             }
-                            else if (error_split [i].match (err_mod_rgx)) {
-                                code_split = ws.verilogCode.split ("\n")
-                                module_name = error_split [i + 1]
-                                code_split.forEach (function (el) { if (el.match (module_name)) { error.push ("**tempcode/randomfilereplacement007/code.v(" + (code_split.indexOf (el)).toString() + ") [CUSTOM_ERROR] This module does not exist!") } })
-                            }   
                         }
 
                         if (error.length != '0')
@@ -212,10 +303,7 @@ wss.on
                                           )
                             if (modded_error.length != '0')
                             {
-                                fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'code.v'));
-                                fs.rmdir (path.resolve (process.cwd(), 'tempcode', ws.unique_client), (err) => {
-                                    if (err) { throw err; }
-                                })
+                                deleteDirectory (path.resolve (process.cwd(), 'tempcode', ws.unique_client))
                                 ws.send ("Compilation failed with the following error:\2" + modded_error.join ('\2'))
                                 ws.close()
                             }
@@ -224,22 +312,21 @@ wss.on
                         {
                             // Introduced Yosys-produced gate-level synthesis approach
                             ws.currentState = "SIMULATE"
-                            var cp = require('child_process');
                             var env = Object.create( process.env );
 
-                            cp.execSync ('yosys -Q -T -q -p "synth_ice40 -top top -blif tempcode/' + ws.unique_client + '/temp.blif" tempcode/' + ws.unique_client + '/code.v 2>&1')
-                            cp.execSync ('yosys -o tempcode/' + ws.unique_client + '/struct_code.v tempcode/' + ws.unique_client + 'temp.blif')
-
                             console.log ("Starting " + ws.unique_client)
+
+                            // cp.execSync ('/home/menon18/yosys-yosys-0.8/yosys -o tempcode/' + ws.unique_client + '/struct_code.v tempcode/' + ws.unique_client + '/temp.blif')
+
+                            console.log ("Reached cvc")
                             var args = ('+interp sim_modules/tb_struct_ice40.sv ' +
-                                         '/usr/local/bin/../share/yosys/ice40/cells_sim.v ' +
-                                         '/usr/local/bin/../share/yosys/ice40/cells_map.v ' +
+                                         '~/yosys-yosys-0.8/techlibs/ice40/cells_sim.v ' +
+                                         '~/yosys-yosys-0.8/techlibs/ice40/cells_map.v ' +
                                          'tempcode/' + ws.unique_client + '/struct_code.v -sv_lib sim_modules/svdpi.so').split (" ")
 
                             // ws.currentState = "SIMULATE"
                             // console.log ("Starting " + ws.unique_client)
                             // var args = ('+interp sim_modules/tb_ice40.sv tempcode/' + ws.unique_client + '/code.v -sv_lib sim_modules/svdpi.so').split (" ")
-                            // var cp = require('child_process');
                             // var env = Object.create( process.env );
 
                             env.SVDPI_TO_PIPE='1';
@@ -261,7 +348,7 @@ wss.on
 
                             running_simulations [ws.unique_client].stdout.on ('data', (indata) => {
                                 var data = indata.toString ('utf8').trim()
-                                try {
+1                                try {
                                     msgdata = data.replace ('\0', '')
                                     JSON.parse (msgdata)
                                     ws.send (msgdata)
@@ -289,30 +376,8 @@ wss.on
                             
                         break;
 
-                    case "SIMULATE":
-                            if (message.includes ("END SIMULATION"))
-                            {
-                                if (!ws.error_caught)
-                                {
-                                    fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'code.v'));
-                                    fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'struct_code.v'));
-                                    // fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'temp.blif'));
-                                    fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'fpga'));
-                                    fs.rmdirSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client), (err) => {
-                                        if (err) { throw err; }
-                                      })
-                                    fs.unlinkSync (path.resolve (process.cwd(), 'logging', ws.unique_client, 'cvclog'));
-                                    fs.rmdirSync (path.resolve (process.cwd(), 'logging', ws.unique_client), (err) => {
-                                        if (err) { throw err; }
-                                    })
-                                }
-                                delete running_simulations [ws.unique_client]
-                                ws.close();
-                            }
-                            else
-                            {
-                                running_simulations [ws.unique_client].stdin.write (message)
-                            }
+                    case "SIMULATE":    
+                        running_simulations [ws.unique_client].stdin.write (message)
                         break;
                         
                 }
@@ -322,20 +387,8 @@ wss.on
                         {
                             if (running_simulations [ws.unique_client])
                             {
-                                if (!ws.error_caught)
-                                {
-                                    fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'code.v'));
-                                    fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'struct_code.v'));
-                                    // fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'temp.blif'));
-                                    fs.unlinkSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client, 'fpga'));
-                                    fs.rmdirSync (path.resolve (process.cwd(), 'tempcode', ws.unique_client), (err) => {
-                                        if (err) { throw err; }
-                                      })
-                                    fs.unlinkSync (path.resolve (process.cwd(), 'logging', ws.unique_client, 'cvclog'));
-                                    fs.rmdirSync (path.resolve (process.cwd(), 'logging', ws.unique_client), (err) => {
-                                        if (err) { throw err; }
-                                    })
-                                }
+                                deleteDirectory (path.resolve (process.cwd(), 'tempcode', ws.unique_client))
+                                deleteDirectory (path.resolve (process.cwd(), 'logging', ws.unique_client))
                                 console.log ("Stopped " + ws.unique_client)
                                 running_simulations [ws.unique_client].kill ('SIGTERM')
                                 delete running_simulations [ws.unique_client]
@@ -344,3 +397,4 @@ wss.on
                     )
         }
     );
+
