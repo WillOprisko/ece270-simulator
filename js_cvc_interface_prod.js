@@ -348,7 +348,7 @@ wss.on
 
                             running_simulations [ws.unique_client].stdout.on ('data', (indata) => {
                                 var data = indata.toString ('utf8').trim()
-1                                try {
+                                try {
                                     msgdata = data.replace ('\0', '')
                                     JSON.parse (msgdata)
                                     ws.send (msgdata)

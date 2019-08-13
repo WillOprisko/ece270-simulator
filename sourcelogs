@@ -1,2 +1,2 @@
-alias nanomainlog="nano ~/270sim/logging/main_2019-08-13-16:34:14"
-alias tailmainlog="tail -f ~/270sim/logging/main_2019-08-13-16:34:14"
+alias nanomainlog="nano ~/270sim/logging/main_2019-08-13-17:00:45"
+alias tailmainlog="tail -f ~/270sim/logging/main_2019-08-13-17:00:45"
