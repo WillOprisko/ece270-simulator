@@ -246,7 +246,7 @@ wss.on
                         // ws.comStatus.split ('\n').forEach (function (element) { if (element.match (err_reg)) { error.push (element.match (err_reg).input) } })
 
                         try {
-                            yosys_out = cp.execSync ('/home/menon18/yosys-yosys-0.8/yosys -p "synth_ice40 -top top -blif tempcode/' 
+                            yosys_out = cp.execSync ('~/yosys-yosys-0.8/yosys -p "synth_ice40 -top top -blif tempcode/' 
                                                      + ws.unique_client + '/temp.blif; delete top; read_blif tempcode/' + ws.unique_client + 
                                                      '/temp.blif; write_verilog tempcode/' + ws.unique_client + '/struct_code.v" tempcode/' 
                                                      + ws.unique_client + '/code.v -l tempcode/' + ws.unique_client + '/yosyslog')
@@ -316,7 +316,7 @@ wss.on
 
                             console.log ("Starting " + ws.unique_client)
 
-                            // cp.execSync ('/home/menon18/yosys-yosys-0.8/yosys -o tempcode/' + ws.unique_client + '/struct_code.v tempcode/' + ws.unique_client + '/temp.blif')
+                            // cp.execSync ('~/yosys-yosys-0.8/yosys -o tempcode/' + ws.unique_client + '/struct_code.v tempcode/' + ws.unique_client + '/temp.blif')
 
                             console.log ("Reached cvc")
                             var args = ('+interp sim_modules/tb_struct_ice40.sv ' +

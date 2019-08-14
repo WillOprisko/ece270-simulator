@@ -27,7 +27,7 @@ cd ~/270sim/open-src-cvc.700c/src
 export PATH=~/270sim/open-src-cvc.700c/src:$PATH
 make -f makefile.cvc -j16 # one time to build all objects quickly with multithreading
 make -f makefile.cvc # two times to link the objects together to form the cvc exe
-printf "export PATH=~/node-v10.16.2-linux-x64/bin:~/yosys-yosys-0.8/:~/270sim/open-src-cvc.700c/src:$PATH\n" >> ~/.bashrc
+printf 'export PATH=~/node-v10.16.2-linux-x64/bin:~/yosys-yosys-0.8/:~/270sim/open-src-cvc.700c/src:$PATH\n' >> ~/.bashrc
 printf 'alias start_server=". ~/270sim/start_server.sh"\n' >> ~/.bashrc
 source ~/.bashrc
 
@@ -50,6 +50,6 @@ cd ~/270sim
 chmod +x start_server.sh
 . ./start_server.sh main
 mkdir logging tempcode
-echo "If any output appears after this line that looks like an error, report it as an issue. If not, press Ctrl+C to stop viewing the log for the Node server. You now have the simulator running on http://localhost/270sim!"
-tailmainlog
+printf "Displaying logfile:\nIf any output appears after this line that looks like an error, report it as an issue. If not, press Ctrl+C to stop viewing the log for the Node server. You now have the simulator running on http://localhost/270sim!"
+tail -f logging/main*
 echo "To restart the Node server if needed the next time you open a Terminal, type 'start_server main'."
