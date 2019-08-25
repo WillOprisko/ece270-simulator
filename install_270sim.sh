@@ -50,6 +50,6 @@ cd ~/270sim
 chmod +x start_server.sh
 . ./start_server.sh main
 mkdir logging tempcode
-printf "Displaying logfile:\nIf any output appears after this line that looks like an error, report it as an issue. If not, press Ctrl+C to stop viewing the log for the Node server. You now have the simulator running on http://localhost/270sim!"
+printf "\nDisplaying logfile:\nIf any output appears after this line that looks like an error, report it as an issue. If not, press Ctrl+C to stop viewing the log for the Node server. You now have the simulator running on http://localhost/270sim!"
 tail -f logging/main*
 echo "To restart the Node server if needed the next time you open a Terminal, type 'start_server main'."
