@@ -5,7 +5,7 @@ sudo apt update
 sudo apt install -y build-essential gcc-multilib lib32z1-dev clang bison flex\
                         libreadline-dev gawk tcl-dev libffi-dev graphviz xdot pkg-config\
                         python3 libboost-system-dev libboost-python-dev libboost-filesystem-dev\
-                    zlib1g-dev apache2
+                    zlib1g-dev apache2 git
 		    
 # Set up Node
 wget https://nodejs.org/dist/v10.16.2/node-v10.16.2-linux-x64.tar.xz
@@ -52,4 +52,4 @@ chmod +x start_server.sh
 mkdir logging tempcode
 printf "\nDisplaying logfile:\nIf any output appears after this line that looks like an error, report it as an issue. If not, press Ctrl+C to stop viewing the log for the Node server. You now have the simulator running on http://localhost/270sim!"
 tail -f logging/main*
-echo "To restart the Node server if needed the next time you open a Terminal, type 'start_server main'."
+echo "To restart the Node server if needed, enter 'start_server main' into a terminal/WSL session."
