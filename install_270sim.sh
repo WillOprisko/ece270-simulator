@@ -48,8 +48,8 @@ sudo service apache2 restart
 
 cd ~/270sim
 chmod +x start_server.sh
-. ./start_server.sh main
 mkdir logging tempcode
+. ./start_server.sh main
 printf "\nDisplaying logfile:\nIf any output appears after this line that looks like an error, report it as an issue. If not, press Ctrl+C to stop viewing the log for the Node server. You now have the simulator running on http://localhost/270sim!"
-tail -f logging/main*
+tailmainlog
 echo "To restart the Node server if needed, enter 'start_server main' into a terminal/WSL session."
