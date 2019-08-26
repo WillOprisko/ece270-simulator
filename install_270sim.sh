@@ -24,7 +24,7 @@ cd ~/yosys-yosys-0.8/
 echo "This make may take a long time, so be prepared to wait a while."
 echo "If you have issues running yosys after this setup, remove the -j16 flag from the make command in this script and run it again."
 sleep 3
-make -j16
+make -j$(nproc)
 export PATH=~/yosys-yosys-0.8/:$PATH
 
 # Install the simulator
