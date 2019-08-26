@@ -1,28 +1,34 @@
 #! /bin/bash
 
+# Update Debian distro
 cd ~  # this will only work in the home directory!
-sudo apt update
-sudo apt install -y build-essential gcc-multilib lib32z1-dev clang bison flex\
-                        libreadline-dev gawk tcl-dev libffi-dev graphviz xdot pkg-config\
-                        python3 libboost-system-dev libboost-python-dev libboost-filesystem-dev\
-                    zlib1g-dev apache2 git
-		    
+echo "1.1 --- Updating apt repos..."
+sudo apt-get update -qq
+echo "1.2 --- Installing prerequisites... (may take some time)"
+sudo apt-get install -y build-essential gcc-multilib lib32z1-dev clang bison flex zlib1g-dev\
+                    	libreadline-dev gawk tcl-dev libffi-dev graphviz xdot pkg-config apache2\
+                    	python3 libboost-system-dev libboost-python-dev libboost-filesystem-dev git > /dev/null
+		   
 # Set up Node
-wget https://nodejs.org/dist/v10.16.2/node-v10.16.2-linux-x64.tar.xz
+echo
+echo "2.1 --- Setting up node.js..."
+wget -q https://nodejs.org/dist/v10.16.2/node-v10.16.2-linux-x64.tar.xz
 tar -xf node-v10.16.2-linux-x64.tar.xz
 rm -rf node-v10.16.2-linux-x64.tar.xz
 export PATH=~/node-v10.16.2-linux-x64/bin:$PATH
 
 # Set up Yosys
+echo "2.2 --- Setting up Yosys..."
 wget -qO- https://github.com/YosysHQ/yosys/archive/yosys-0.8.tar.gz | tar -xzf -
 cd ~/yosys-yosys-0.8/
 echo "This make may take a long time, so be prepared to wait a while."
+echo "If you have issues running yosys after this setup, remove the -j16 flag from the make command in this script and run it again."
 sleep 3
-make -j16  # If you have issues running yosys, remove the -j16 flag and run this command again
+make -j16
 export PATH=~/yosys-yosys-0.8/:$PATH
 
 # Install the simulator
-# git clone https://github.com/norandomtechie/ece270-simulator 270sim
+echo "2.3 --- Setting up CVC..."
 cd ~/270sim/open-src-cvc.700c/src
 export PATH=~/270sim/open-src-cvc.700c/src:$PATH
 make -f makefile.cvc -j16 # one time to build all objects quickly with multithreading
@@ -32,6 +38,7 @@ printf 'alias start_server=". ~/270sim/start_server.sh"\n' >> ~/.bashrc
 source ~/.bashrc
 
 # Set up simulator directory as webpage
+echo "2.4 --- Setting up Apache..."
 sudo ln -s ~/270sim /var/www/html/270sim
 cd /var/www/html/270sim
 
@@ -43,13 +50,13 @@ sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-availab
 echo "WARNING: Any existing config at /etc/apache2/sites-available/000-default.conf will be backed up to /etc/apache2/sites-available/000-default.bak.conf in the event that you need to restore or merge your old configuration."
 sleep 3
 sudo cp 000-default-sim.conf /etc/apache2/sites-available/000-default.conf
-
 sudo service apache2 restart
 
+echo
+echo "3.0 --- Spinning up node websocket server..."
 cd ~/270sim
 chmod +x start_server.sh
 mkdir logging tempcode
 . ./start_server.sh main
-printf "\nDisplaying logfile:\nIf any output appears after this line that looks like an error, report it as an issue. If not, press Ctrl+C to stop viewing the log for the Node server. You now have the simulator running on http://localhost/270sim!"
-tailmainlog
-echo "To restart the Node server if needed, enter 'start_server main' into a terminal/WSL session."
+echo "   --- Script complete! ---"
+echo "If the page shows 'server is down', enter 'cd ~/270sim; . ./start_server main' into a terminal/WSL session to start the node server again."
