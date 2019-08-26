@@ -31,7 +31,7 @@ export PATH=~/yosys-yosys-0.8/:$PATH
 echo "2.3 --- Setting up CVC..."
 cd ~/270sim/open-src-cvc.700c/src
 export PATH=~/270sim/open-src-cvc.700c/src:$PATH
-make -f makefile.cvc -j16 # one time to build all objects quickly with multithreading
+make -f makefile.cvc -j$(nproc) # one time to build all objects quickly with multithreading
 make -f makefile.cvc # two times to link the objects together to form the cvc exe
 printf 'export PATH=~/node-v10.16.2-linux-x64/bin:~/yosys-yosys-0.8/:~/270sim/open-src-cvc.700c/src:$PATH\n' >> ~/.bashrc
 printf 'alias start_server=". ~/270sim/start_server.sh"\n' >> ~/.bashrc
