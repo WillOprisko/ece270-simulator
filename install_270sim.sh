@@ -39,6 +39,9 @@ source ~/.bashrc
 
 echo
 echo "3.0 --- Spinning up node websocket server..."
+sudo ln -s ~/270sim/open-src-cvc.700c/src/cvc /usr/bin/cvc
+sudo ln -s ~/node-v10.16.2-linux-x64/bin/node /usr/bin/node
+sudo ln -s ~/yosys-yosys-0.8/yosys /usr/bin/yosys
 cd ~/270sim
 chmod +x start_server.sh
 mkdir logging tempcode

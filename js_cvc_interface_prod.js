@@ -370,7 +370,6 @@ wss.on
 
                             // cp.execSync ('~/yosys-yosys-0.8/yosys -o tempcode/' + ws.unique_client + '/struct_code.v tempcode/' + ws.unique_client + '/temp.blif')
 
-                            console.log ("Reached cvc")
                             var args = ('+interp sim_modules/tb_struct_ice40.sv ' +
                                          'cells_sim.v ' + 'cells_map.v ' +
                                          'tempcode/' + ws.unique_client + '/struct_code.v -sv_lib sim_modules/svdpi.so').split (" ")
@@ -420,7 +419,6 @@ wss.on
                             });
 
                             running_simulations [ws.unique_client].on ('exit', (code, signal) => {
-				console.log (code)
                                 ws.send ("END SIMULATION")
                                 ws.close()
                             });
@@ -439,7 +437,6 @@ wss.on
                         {
                             if (running_simulations [ws.unique_client])
                             {
-				console.log ('Hit her across the head')
                                 deleteDirectory (path.resolve (process.cwd(), 'tempcode', ws.unique_client))
                                 deleteDirectory (path.resolve (process.cwd(), 'logging', ws.unique_client))
                                 console.log ("Stopped " + ws.unique_client)
