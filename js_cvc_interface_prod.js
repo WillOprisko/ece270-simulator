@@ -299,7 +299,7 @@ wss.on
                         // ws.comStatus.split ('\n').forEach (function (element) { if (element.match (err_reg)) { error.push (element.match (err_reg).input) } })
 
                         try {
-                            yosys_out = cp.execSync ('~/yosys-yosys-0.8/yosys -p "synth_ice40 -top top -blif tempcode/' 
+                            yosys_out = cp.execSync ('yosys -p "synth_ice40 -top top -blif tempcode/' 
                                                      + ws.unique_client + '/temp.blif; delete top; read_blif tempcode/' + ws.unique_client + 
                                                      '/temp.blif; write_verilog tempcode/' + ws.unique_client + '/struct_code.v" tempcode/' 
                                                      + ws.unique_client + '/code.v -l tempcode/' + ws.unique_client + '/yosyslog')
@@ -315,7 +315,6 @@ wss.on
                             if (logarray.indexOfReg (/Error/i).message.match (ws.unique_client))    // Is a syntax error
                             {
                                 related_error = logarray.indexOfReg (/Error/i).message
-                                
                             } else  // Is a mapping error
                             {
                                 skippable_error_regex = /is not part of the design/i
@@ -373,8 +372,7 @@ wss.on
 
                             console.log ("Reached cvc")
                             var args = ('+interp sim_modules/tb_struct_ice40.sv ' +
-                                         '~/yosys-yosys-0.8/techlibs/ice40/cells_sim.v ' +
-                                         '~/yosys-yosys-0.8/techlibs/ice40/cells_map.v ' +
+                                         'cells_sim.v ' + 'cells_map.v ' +
                                          'tempcode/' + ws.unique_client + '/struct_code.v -sv_lib sim_modules/svdpi.so').split (" ")
 
                             // ws.currentState = "SIMULATE"
@@ -422,6 +420,7 @@ wss.on
                             });
 
                             running_simulations [ws.unique_client].on ('exit', (code, signal) => {
+				console.log (code)
                                 ws.send ("END SIMULATION")
                                 ws.close()
                             });
@@ -440,6 +439,7 @@ wss.on
                         {
                             if (running_simulations [ws.unique_client])
                             {
+				console.log ('Hit her across the head')
                                 deleteDirectory (path.resolve (process.cwd(), 'tempcode', ws.unique_client))
                                 deleteDirectory (path.resolve (process.cwd(), 'logging', ws.unique_client))
                                 console.log ("Stopped " + ws.unique_client)
