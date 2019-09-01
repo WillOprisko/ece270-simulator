@@ -22,9 +22,9 @@ echo "2.2 --- Setting up Yosys..."
 wget -qO- https://github.com/YosysHQ/yosys/archive/yosys-0.8.tar.gz | tar -xzf -
 cd ~/yosys-yosys-0.8/
 echo "This make may take a long time, so be prepared to wait a while."
-echo "If you have issues running yosys after this setup, remove the -j16 flag from the make command in this script and run it again."
+echo "If you have issues running yosys after this setup, remove the -j(nproc) flag from the make command in this script and run it again."
 sleep 3
-make -j$(nproc)
+sudo make install -j$(nproc)
 export PATH=~/yosys-yosys-0.8/:$PATH
 
 # Install the simulator
