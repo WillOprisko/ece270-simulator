@@ -6,9 +6,9 @@ echo "1.1 --- Updating apt repos..."
 sudo apt-get update -qq
 echo "1.2 --- Installing prerequisites... (may take some time)"
 sudo apt-get install -y build-essential gcc-multilib lib32z1-dev clang bison flex zlib1g-dev\
-                    	libreadline-dev gawk tcl-dev libffi-dev graphviz xdot pkg-config apache2\
+                    	libreadline-dev gawk tcl-dev libffi-dev graphviz xdot pkg-config \
                     	python3 libboost-system-dev libboost-python-dev libboost-filesystem-dev git > /dev/null
-		   
+
 # Set up Node
 echo
 echo "2.1 --- Setting up node.js..."
@@ -36,21 +36,6 @@ make -f makefile.cvc # two times to link the objects together to form the cvc ex
 printf 'export PATH=~/node-v10.16.2-linux-x64/bin:~/yosys-yosys-0.8/:~/270sim/open-src-cvc.700c/src:$PATH\n' >> ~/.bashrc
 printf 'alias start_server=". ~/270sim/start_server.sh"\n' >> ~/.bashrc
 source ~/.bashrc
-
-# Set up simulator directory as webpage
-echo "2.4 --- Setting up Apache..."
-sudo ln -s ~/270sim /var/www/html/270sim
-cd /var/www/html/270sim
-
-# Enable WebSocket routing
-sudo a2enmod proxy_wstunnel
-
-# Edit routing settings file
-sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/bak_000-default.conf
-echo "WARNING: Any existing config at /etc/apache2/sites-available/000-default.conf will be backed up to /etc/apache2/sites-available/000-default.bak.conf in the event that you need to restore or merge your old configuration."
-sleep 3
-sudo cp 000-default-sim.conf /etc/apache2/sites-available/000-default.conf
-sudo service apache2 restart
 
 echo
 echo "3.0 --- Spinning up node websocket server..."
